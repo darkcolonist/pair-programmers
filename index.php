@@ -1,5 +1,4 @@
 <?php
-header("content-type: text/plain");
 function createPairs($members){
   $n = count($members);
   $rounds = array();
@@ -17,7 +16,10 @@ function createPairs($members){
 
 function fileToArray($filename)
 {
-  // Read the entire file into an array, with each element representing a line
+  if (!file_exists($filename)) {
+    throw new Exception("The file '$filename' does not exist.");
+  }
+
   $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
   return $lines;
@@ -88,5 +90,6 @@ $pairs = createPairs($members);
 // useCase1($pairs);
 // useCase2();
 $currentPair = $pairs[$rotations % count($pairs)];
+header("content-type: text/plain");
 echo generateAsciiTable($currentPair);
 ?>

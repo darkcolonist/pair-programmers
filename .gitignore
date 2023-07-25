@@ -1,2 +1,4 @@
 .vscode
 members.txt
+members.*.txt
+current.txt
