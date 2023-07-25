@@ -1,53 +1,16 @@
 <?php
 header("content-type: text/plain");
-// Function to read file and return an array of names
-function readMembers($filename)
+// Function to read file and return an array of lines
+function fileToArray($filename)
 {
-  // Open the file for reading
-  $file = fopen($filename, "r");
+  // Read the entire file into an array, with each element representing a line
+  $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-  // Initialize an array to store the names
-  $names = array();
-
-  // Loop through each line in the file
-  while (!feof($file)) {
-    $name = fgets($file);
-    // Trim any leading/trailing whitespace
-    $name = trim($name);
-
-    // Add the name to the array
-    if (!empty($name)) {
-      $names[] = $name;
-    }
-  }
-
-  // Close the file
-  fclose($file);
-
-  return $names;
+  return $lines;
 }
 
 function println($string = ''){
   echo "{$string}\n";
-}
-
-// Function to rotate the array based on $rotate value
-function rotateArrayInefficient($array, $rotate)
-{
-  $count = count($array);
-
-  if ($count === 0 || $rotate === 0) {
-    return $array;
-  }
-
-  $rotate = $rotate % $count; // In case $rotate is greater than the array size
-
-  for ($i = 0; $i < $rotate; $i++) {
-    $element = array_shift($array);
-    array_push($array, $element);
-  }
-
-  return $array;
 }
 
 // Function to rotate the array based on $rotate value
@@ -67,8 +30,8 @@ function rotateArray($array, $rotate)
   return array_merge($slice1, $slice2);
 }
 
-// Function to display members in a specific order based on $set value
-function getMemberPairings($names, $set)
+// Function to display members in a specific order based on $rotations value
+function getMemberPairings($names, $rotations)
 {
   $count = count($names);
 
@@ -77,7 +40,7 @@ function getMemberPairings($names, $set)
     return;
   }
 
-  $rotatedNames = rotateArray($names, $set);
+  $rotatedNames = rotateArray($names, $rotations);
 
   $pairings = [];
 
@@ -91,45 +54,42 @@ function getMemberPairings($names, $set)
   return $pairings;
 }
 
-
-// Function to display members in a specific order based on $set value
-function displayMembersBySet($names, $set)
+function generateAsciiTable($data)
 {
-  $count = count($names);
+  $table = '';
+  // Calculate the maximum length of each column
+  $maxColumnLengths = array_map('max', ...array_map(function ($row) {
+    return array_map('strlen', $row);
+  }, $data));
 
-  if ($count === 0) {
-    println("No members found.");
-    return;
+  // Generate the table header
+  $table .= "+-" . implode("-+-", array_map(function ($length) {
+    return str_repeat("-", $length);
+  }, $maxColumnLengths)) . "-+\n";
+
+  // Generate the table rows
+  foreach ($data as $row) {
+    $table .= "| " . implode(" | ", array_map(function ($value, $length) {
+      return str_pad($value, $length, " ", STR_PAD_RIGHT);
+    }, $row, $maxColumnLengths)) . " |\n";
   }
 
-  // if ($set === 1) {
-  $rotatedNames = rotateArray($names, $set);
+  // Generate the table footer
+  $table .= "+-" . implode("-+-", array_map(function ($length) {
+    return str_repeat("-", $length);
+  }, $maxColumnLengths)) . "-+\n";
 
-  for ($i = 0; $i < $count; $i += 2) {
-    $nextIndex = $i + 1;
-    $nextName = isset($rotatedNames[$nextIndex]) ? $rotatedNames[$nextIndex] : '';
-    println("{$rotatedNames[$i]} -> $nextName");
-  }
-  // } elseif ($set === 2) {
-  //   for ($i = $count - 1; $i >= 0; $i -= 2) {
-  //     $prevIndex = $i - 1;
-  //     $prevName = isset($names[$prevIndex]) ? $names[$prevIndex] : '';
-  //     println("{$names[$i]} -> $prevName");
-  //   }
-  // } else {
-  //   println("Invalid set value. Please use 1 or 2.");
-  // }
-
+  return $table;
 }
 
 // Call the function to read members from the file
-$members = readMembers("members.txt");
+$members = fileToArray("members.txt");
+$currents = fileToArray("current.txt");
+$rotations = (integer)$currents[0];
 
-// Set the desired set value (1 or 2)
-$set = (integer)$_GET["set"];
+$pairs = getMemberPairings($members, $rotations);
 
-// Call the function to display members based on the set value
-// displayMembersBySet($members, $set);
-$pairs = getMemberPairings($members, $set);
-print_r($pairs);
+// Call the function to generate the ASCII table as a string
+$asciiTable = generateAsciiTable($pairs);
+echo $asciiTable;
 ?>
