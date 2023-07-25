@@ -55,40 +55,11 @@ function generateAsciiTable($data)
     return $table;
 }
 
-function useCase1($pairs){
-  foreach ($pairs as $key => $pair) {
-    $asciiTable = generateAsciiTable($pair);
-    echo $asciiTable;
-    println('');
-    println('');
-  }
-}
-
-function useCase2(){
-  $max = 7;
-  $length = 9;
-  for ($i=0; $i < $length; $i++) { 
-    println();
-    echo $i % $max;
-    println();
-  }
-}
-
 // Call the function to read members from the file
 $members = fileToArray("members.txt");
 $currents = fileToArray("current.txt");
 $rotations = (integer)$currents[0];
-
-// $pairs = getMemberPairings($members, $rotations);
-// // Call the function to generate the ASCII table as a string
-// $asciiTable = generateAsciiTable($pairs);
-// echo $asciiTable;
-
-// useCase1();
-
 $pairs = createPairs($members);
-// useCase1($pairs);
-// useCase2();
 $currentPair = $pairs[$rotations % count($pairs)];
 header("content-type: text/plain");
 println("pair up #" . $rotations);
