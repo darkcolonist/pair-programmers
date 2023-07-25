@@ -1,1 +1,9 @@
-source: https://docs.google.com/spreadsheets/d/12c3kd_zK9ES1nug3lACWezEHoCu_zJ4NSb5OC_ho0L4/edit#gid=0
+# pair programmers
+
+to display programmer pairups
+
+* copy `members.txt.example` to `members.txt`
+* copy `current.txt.example` to `current.txt`
+
+## usage
+pairups will change depending on the number in `current.txt`.
