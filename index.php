@@ -91,5 +91,8 @@ $pairs = createPairs($members);
 // useCase2();
 $currentPair = $pairs[$rotations % count($pairs)];
 header("content-type: text/plain");
+println("pair up #" . $rotations);
+println("date: " . date('r'));
+
 echo generateAsciiTable($currentPair);
 ?>
