@@ -1,20 +1,6 @@
 <?php
 header("content-type: text/plain");
-function createPairs($members){
-  $n = count($members);
-  $rounds = array();
-  for ($r = 0; $r < $n - 1; $r++) {
-    for ($i = 0; $i < $n / 2; $i++) {
-      $rounds[$r][] = [$members[$i], $members[$n - 1 - $i]];
-    }
-    // Perform round-robin shift, keeping first player in its spot:
-    $members[] = array_splice($members, 1, 1)[0];
-  }
-  // shift once more to put array in its original sequence:
-  $members[] = array_splice($members, 1, 1)[0];
-  return $rounds;
-}
-
+// Function to read file and return an array of lines
 function fileToArray($filename)
 {
   // Read the entire file into an array, with each element representing a line
@@ -25,6 +11,47 @@ function fileToArray($filename)
 
 function println($string = ''){
   echo "{$string}\n";
+}
+
+// Function to rotate the array based on $rotate value
+function rotateArray($array, $rotate)
+{
+  $count = count($array);
+
+  if ($count === 0 || $rotate === 0) {
+    return $array;
+  }
+
+  $rotate = $rotate % $count; // In case $rotate is greater than the array size
+
+  $slice1 = array_slice($array, $rotate);
+  $slice2 = array_slice($array, 0, $rotate);
+
+  return array_merge($slice1, $slice2);
+}
+
+// Function to display members in a specific order based on $rotations value
+function getMemberPairings($names, $rotations)
+{
+  $count = count($names);
+
+  if ($count === 0) {
+    println("No members found.");
+    return;
+  }
+
+  $rotatedNames = rotateArray($names, $rotations);
+
+  $pairings = [];
+
+  for ($i = 0; $i < $count; $i += 2) {
+    $nextIndex = $i + 1;
+    $nextName = isset($rotatedNames[$nextIndex]) ? $rotatedNames[$nextIndex] : '';
+
+    $pairings[] = [$rotatedNames[$i], $nextName];
+  }
+
+  return $pairings;
 }
 
 function generateAsciiTable($data)
@@ -53,22 +80,19 @@ function generateAsciiTable($data)
     return $table;
 }
 
-function useCase1($pairs){
-  foreach ($pairs as $key => $pair) {
-    $asciiTable = generateAsciiTable($pair);
+function useCase1(){
+  for ($i=0; $i < 5; $i++) {
+    // Call the function to read members from the file
+    $members = fileToArray("members.txt");
+    $currents = fileToArray("current.txt");
+    $rotations = (int)$currents[0];
+
+    $pairs = getMemberPairings($members, $i);
+    // Call the function to generate the ASCII table as a string
+    $asciiTable = generateAsciiTable($pairs);
     echo $asciiTable;
     println('');
     println('');
-  }
-}
-
-function useCase2(){
-  $max = 7;
-  $length = 9;
-  for ($i=0; $i < $length; $i++) { 
-    println();
-    echo $i % $max;
-    println();
   }
 }
 
@@ -82,11 +106,5 @@ $rotations = (integer)$currents[0];
 // $asciiTable = generateAsciiTable($pairs);
 // echo $asciiTable;
 
-// useCase1();
-
-$pairs = createPairs($members);
-// useCase1($pairs);
-// useCase2();
-$currentPair = $pairs[$rotations % count($pairs)];
-echo generateAsciiTable($currentPair);
+useCase1();
 ?>
