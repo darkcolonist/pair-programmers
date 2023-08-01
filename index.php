@@ -62,29 +62,36 @@ function fisherYatesShuffle($items, $seed)
 
 function generateAsciiTable($data)
 {
-    $table = '';
-    // Calculate the maximum length of each column
-    $maxColumnLengths = array_map('max', ...array_map(function ($row) {
-        return array_map('strlen', $row);
-    }, $data));
+  $table = '';
+  // Calculate the maximum length of each column
+  $maxColumnLengths = array_map('max', ...array_map(function ($row) {
+    return array_map('strlen', $row);
+  }, $data));
 
-    // Generate the table header
+  // Generate the table header
+  $table .= "+-" . implode("-+-", array_map(function ($length) {
+    return str_repeat("-", $length + 4);
+  }, $maxColumnLengths)) . "-+\n";
+
+  // Generate the table rows
+  foreach ($data as $row) {
+    $table .= "|  " . implode("  |  ", array_map(function ($length) {
+      return str_repeat(" ", $length + 2);
+    }, $maxColumnLengths)) . "  |\n";
+    $table .= "|  " . implode("  |  ", array_map(function ($value, $length) {
+      return str_pad($value, $length + 2, " ", STR_PAD_BOTH);
+    }, $row, $maxColumnLengths)) . "  |\n";
+    $table .= "|  " . implode("  |  ", array_map(function ($length) {
+      return str_repeat(" ", $length + 2);
+    }, $maxColumnLengths)) . "  |\n";
     $table .= "+-" . implode("-+-", array_map(function ($length) {
-        return str_repeat("-", $length);
+      return str_repeat("-", $length + 4);
     }, $maxColumnLengths)) . "-+\n";
+  }
 
-    // Generate the table rows
-    foreach ($data as $row) {
-        $table .= "| " . implode(" | ", array_map(function ($value, $length) {
-            return str_pad($value, $length, " ", STR_PAD_RIGHT);
-        }, $row, $maxColumnLengths)) . " |\n";
-        $table .= "+-" . implode("-+-", array_map(function ($length) {
-            return str_repeat("-", $length);
-        }, $maxColumnLengths)) . "-+\n";
-    }
-
-    return rtrim($table, "\n");
+  return rtrim($table, "\n");
 }
+
 
 // Call the function to read members from the file
 $members = fileToArray("members.txt");
@@ -95,10 +102,8 @@ $currentPair = $pairs[$rotations % count($pairs)];
 $seedToday = date("Ymd", strtotime("now"));
 header("content-type: text/plain");
 println("pair up #" . $rotations);
-println("date: " . fileStat("current.txt")["mtime"]);
+println("generated: " . fileStat("current.txt")["mtime"]);
 $shuffledRowPairs = fisherYatesShuffle($currentPair, $seedToday);
-// println($seedToday);
-// println('------------------------------');
 echo generateAsciiTable($shuffledRowPairs);
 // println(generateAsciiTable($currentPair)); // if you don't want shuffling
 ?>
