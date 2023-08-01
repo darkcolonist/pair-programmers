@@ -25,8 +25,39 @@ function fileToArray($filename)
   return $lines;
 }
 
+function fileStat($filename)
+{
+  if (!file_exists($filename)) {
+    throw new Exception("The file '$filename' does not exist.");
+  }
+
+  $stat = stat($filename);
+
+  $neededStat = [];
+
+  $neededStat["atime"] = date("r", $stat["atime"]);
+  $neededStat["mtime"] = date("r", $stat["mtime"]);
+  $neededStat["ctime"] = date("r", $stat["ctime"]);
+
+  return $neededStat;
+}
+
 function println($string = ''){
   echo "{$string}\n";
+}
+
+// https://stackoverflow.com/a/6557863/27698
+function fisherYatesShuffle($items, $seed)
+{
+  @mt_srand($seed);
+  for ($i = count($items) - 1; $i > 0; $i--) {
+    $j = @mt_rand(0, $i);
+    $tmp = $items[$i];
+    $items[$i] = $items[$j];
+    $items[$j] = $tmp;
+  }
+
+  return $items;
 }
 
 function generateAsciiTable($data)
@@ -52,7 +83,7 @@ function generateAsciiTable($data)
         }, $maxColumnLengths)) . "-+\n";
     }
 
-    return $table;
+    return rtrim($table, "\n");
 }
 
 // Call the function to read members from the file
@@ -61,9 +92,13 @@ $currents = fileToArray("current.txt");
 $rotations = (integer)$currents[0];
 $pairs = createPairs($members);
 $currentPair = $pairs[$rotations % count($pairs)];
+$seedToday = date("Ymd", strtotime("now"));
 header("content-type: text/plain");
 println("pair up #" . $rotations);
-println("date: " . date('r'));
-
-echo generateAsciiTable($currentPair);
+println("date: " . fileStat("current.txt")["mtime"]);
+$shuffledRowPairs = fisherYatesShuffle($currentPair, $seedToday);
+// println($seedToday);
+// println('------------------------------');
+echo generateAsciiTable($shuffledRowPairs);
+// println(generateAsciiTable($currentPair)); // if you don't want shuffling
 ?>
