@@ -14,24 +14,15 @@ jobs:
 
     steps:
       - name: Ping host by touching a temp file
+        working-directory: /tmp
         run: |
-          touch /tmp/creative-staging-php70-github-workflow.tmp
+          touch creative-staging-php70-github-workflow.tmp
 
-      - name: Check out code
-        uses: actions/checkout@v2
+      # - name: Check out code
+      #   uses: actions/checkout@v2
 
-      - name: Ping host by touching a temp file
-        run: |
-         touch /tmp/workflow.tmp
-
-      - name: Change directory
-        run: |
-         cd ${{ vars.PROD_WORKDIR }}
-
-      - name: Display directory
+      - name: Pull
+        working-directory: ${{ vars.PROD_WORKDIR }}
         run: |
          pwd
-
-      - name: Pull from server
-        run: |
          git pull
