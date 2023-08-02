@@ -60,6 +60,21 @@ function fisherYatesShuffle($items, $seed)
   return $items;
 }
 
+function shuffleAll($items){
+  $seedToday = date("Ymd", strtotime("now"));
+
+  if(isset($_GET['random_shuffle']))
+    $seedToday = rand();
+
+  $shuffled = fisherYatesShuffle($items, $seedToday);
+
+  foreach ($shuffled as $key => $anItem) {
+    $shuffled[$key] = fisherYatesShuffle($anItem, intval("{$seedToday}{$key}"));
+  }
+
+  return $shuffled;
+}
+
 function generateAsciiTable($data)
 {
   $table = '';
@@ -92,18 +107,17 @@ function generateAsciiTable($data)
   return rtrim($table, "\n");
 }
 
-
 // Call the function to read members from the file
 $members = fileToArray("members.txt");
 $currents = fileToArray("current.txt");
 $rotations = (integer)$currents[0];
 $pairs = createPairs($members);
 $currentPair = $pairs[$rotations % count($pairs)];
-$seedToday = date("Ymd", strtotime("now"));
+
 header("content-type: text/plain");
 println("pair up #" . $rotations);
 println("generated: " . fileStat("current.txt")["mtime"]);
-$shuffledRowPairs = fisherYatesShuffle($currentPair, $seedToday);
+$shuffledRowPairs = shuffleAll($currentPair);
 echo generateAsciiTable($shuffledRowPairs);
 // println(generateAsciiTable($currentPair)); // if you don't want shuffling
 ?>
