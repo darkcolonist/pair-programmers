@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Ping host by touching a temp file
         run: |
-          touch /tmp/workflow.tmp
+          touch /tmp/creative-staging-php70-github-workflow.tmp
       
       # - name: Check out code
       #  uses: actions/checkout@v2
@@ -28,9 +28,9 @@ jobs:
       #  run: |
       #    cd $DIRECTORY_PATH
 
-      # - name: Display directory
-      #  run: |
-      #    pwd
+      - name: Display directory
+        run: |
+         pwd
 
       # - name: Pull from server
       #  run: |
