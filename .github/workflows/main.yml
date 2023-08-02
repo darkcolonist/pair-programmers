@@ -13,20 +13,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
       - name: Ping host by touching a temp file
         run: |
           touch /tmp/workflow.tmp
+      
+      # - name: Check out code
+      #  uses: actions/checkout@v2
 
-      - name: Change directory
-        run: |
-          cd $DIRECTORY_PATH
+      # - name: Ping host by touching a temp file
+      #  run: |
+      #    touch /tmp/workflow.tmp
 
-      - name: Display directory
-        run: |
-          pwd
+      # - name: Change directory
+      #  run: |
+      #    cd $DIRECTORY_PATH
+
+      # - name: Display directory
+      #  run: |
+      #    pwd
 
       # - name: Pull from server
       #  run: |
