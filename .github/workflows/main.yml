@@ -22,7 +22,7 @@ jobs:
 
       - name: Display directory
         run: |
-          echo $DIRECTORY_PATH
+          pwd
 
       # - name: Pull from server
       #  run: |
