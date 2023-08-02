@@ -17,25 +17,21 @@ jobs:
         run: |
           touch /tmp/creative-staging-php70-github-workflow.tmp
 
-      - name: Display Repository Variable
-        run: |
-          echo "variable: ${{ vars.PROD_WORKDIR }}"
-      
-      # - name: Check out code
-      #  uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-      # - name: Ping host by touching a temp file
-      #  run: |
-      #    touch /tmp/workflow.tmp
+      - name: Ping host by touching a temp file
+        run: |
+         touch /tmp/workflow.tmp
 
       - name: Change directory
         run: |
-         cd ${{ env.REPO_CREATIVESTAGINGPHP70WORKDIR }}
+         cd ${{ vars.PROD_WORKDIR }}
 
       - name: Display directory
         run: |
          pwd
 
-      # - name: Pull from server
-      #  run: |
-      #    git pull
+      - name: Pull from server
+        run: |
+         git pull
