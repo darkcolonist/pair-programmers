@@ -26,7 +26,7 @@ jobs:
 
       - name: Change directory
         run: |
-         cd ${{ env.prod.CREATIVESTAGINGPHP70WORKDIR }}
+         cd ${{ env.REPO_CREATIVESTAGINGPHP70WORKDIR }}
 
       - name: Display directory
         run: |
