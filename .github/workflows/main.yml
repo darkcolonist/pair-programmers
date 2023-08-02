@@ -10,7 +10,7 @@ on:
 
 jobs:
   auto_pull:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Ping host by touching a temp file
