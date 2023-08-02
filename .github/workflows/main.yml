@@ -24,9 +24,9 @@ jobs:
       #  run: |
       #    touch /tmp/workflow.tmp
 
-      # - name: Change directory
-      #  run: |
-      #    cd $DIRECTORY_PATH
+      - name: Change directory
+        run: |
+         cd $CREATIVESTAGINGPHP70WORKDIR
 
       - name: Display directory
         run: |
