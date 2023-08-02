@@ -19,7 +19,7 @@ jobs:
 
       - name: Display Repository Variable
         run: |
-          echo "variable: ${{ variables.PROD_WORKDIR }}"
+          echo "variable: ${{ vars.PROD_WORKDIR }}"
       
       # - name: Check out code
       #  uses: actions/checkout@v2
