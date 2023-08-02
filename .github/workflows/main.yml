@@ -16,6 +16,10 @@ jobs:
       - name: Ping host by touching a temp file
         run: |
           touch /tmp/creative-staging-php70-github-workflow.tmp
+
+      - name: Display Repository Variable
+        run: |
+          echo ${{ env.REPO_PROD_WORKDIR }}
       
       # - name: Check out code
       #  uses: actions/checkout@v2
