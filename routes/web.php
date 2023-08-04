@@ -2,6 +2,8 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Helpers\Pairs;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -14,5 +16,7 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return response(Pairs::currentAsciiTable(), 200, [
+      "content-type" => "text/plain"
+    ]);
 });
