@@ -20,7 +20,7 @@ class Pairs{
       static function fileToArray($filename)
       {
         if (!file_exists($filename)) {
-          throw new Exception("The file '$filename' does not exist.");
+          throw new \Exception("The file '$filename' does not exist.");
         }
 
         $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
