@@ -2,3 +2,10 @@
 members.txt
 members.*.txt
 current.txt
+
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+.phpunit.result.cache
