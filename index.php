@@ -75,6 +75,7 @@ function shuffleAll($items){
   return $shuffled;
 }
 
+// credits to chatGPT
 function generateAsciiTable($data)
 {
   $table = '';
@@ -107,10 +108,11 @@ function generateAsciiTable($data)
   return rtrim($table, "\n");
 }
 
-// Call the function to read members from the file
 $members = fileToArray("members.txt");
 $currents = fileToArray("current.txt");
 $rotations = (integer)$currents[0];
+
+// below is where the engine starts
 $pairs = createPairs($members);
 $currentPair = $pairs[$rotations % count($pairs)];
 

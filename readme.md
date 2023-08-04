@@ -2,6 +2,9 @@
 
 to display programmer pairups
 
+# requirements
+* php-7.3.9
+
 ## usage
 * copy `members.txt.example` to `members.txt`
 * copy `current.txt.example` to `current.txt`
