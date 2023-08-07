@@ -15,8 +15,13 @@ use App\Helpers\Pairs;
 |
 */
 
-$router->get('/', function () use ($router) {
-    return response(Pairs::currentAsciiTable(), 200, [
-      "content-type" => "text/plain"
-    ]);
+$router->get('/legacy', function () use ($router) {
+  return response(Pairs::currentAsciiTable(), 200, [
+    "content-type" => "text/plain"
+  ]);
+});
+
+// Catch all route for SPA
+$router->get('[{path:.*}]', function ($path = null) use ($router) {
+  return view('react');
 });
