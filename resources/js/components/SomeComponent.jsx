@@ -1,3 +1,5 @@
-export default function(){
-  return <>acccccsasdsa</>
+const SomeComponent = function(){
+  return <>YO</>
 }
+
+export default SomeComponent;

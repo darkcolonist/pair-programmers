@@ -1,10 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './Index.css'
+import axios from 'axios';
+window.axios = axios;
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App/>
-  </React.StrictMode>,
-)
+import { createRoot } from 'react-dom/client'
+import App from './App';
+import './Index.css';
+
+if (document.getElementById('root')) {
+  createRoot(document.getElementById('root')).render(<App />)
+}

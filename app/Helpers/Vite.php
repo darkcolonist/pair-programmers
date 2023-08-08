@@ -2,12 +2,17 @@
 namespace App\Helpers;
 class Vite
 {
+  /**
+   * ensure below matches base: '/dist/' in vite.config.js otherwise HMR will not work
+   */
+  const SUB_DIRECTORY = "dist";
+
   static function getDevHost(){
-    return env("VITE_URL", "http://localhost:5173");
+    return env("VITE_URL", "http://localhost:5173/".self::SUB_DIRECTORY);
   }
 
   static function getProdPath($file){
-    return env("VITE_PROD_PATH", base_path('public/dist/'.$file));
+    return env("VITE_PROD_PATH", base_path('public/'. self::SUB_DIRECTORY.'/'.$file));
   }
 
   // For a real-world example check here:
@@ -35,6 +40,13 @@ class Vite
 
   static function isDev(string $entry): bool
   {
+    /**
+     * check .env also. this is fast compared to curl below which is
+     * slow as it will wait for a timeout on local dev host
+     */
+    if(env("APP_ENV") !== "local")
+      return false;
+
     // This method is very useful for the local server
     // if we try to access it, and by any means, didn't started Vite yet
     // it will fallback to load the production files from manifest
@@ -125,7 +137,7 @@ class Vite
     $manifest = self::getManifest();
 
     return isset($manifest[$entry])
-    ? '/dist/' . $manifest[$entry]['file']
+    ? '/'.self::SUB_DIRECTORY.'/' . $manifest[$entry]['file']
     : '';
   }
 
@@ -136,7 +148,7 @@ class Vite
 
     if (!empty($manifest[$entry]['imports'])) {
       foreach ($manifest[$entry]['imports'] as $imports) {
-        $urls[] = '/dist/' . $manifest[$imports]['file'];
+        $urls[] = '/' . self::SUB_DIRECTORY . '/' . $manifest[$imports]['file'];
       }
     }
     return $urls;
@@ -149,7 +161,7 @@ class Vite
 
     if (!empty($manifest[$entry]['css'])) {
       foreach ($manifest[$entry]['css'] as $file) {
-        $urls[] = '/dist/' . $file;
+        $urls[] = '/' . self::SUB_DIRECTORY . '/' . $file;
       }
     }
     return $urls;
