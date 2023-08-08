@@ -21,7 +21,17 @@ $router->get('/legacy', function () use ($router) {
   ]);
 });
 
+$router->get('/pairs', function () use ($router) {
+  return response()->json([
+    "current" => Pairs::currentWithMeta()
+  ]);
+});
+
 // Catch all route for SPA
 $router->get('[{path:.*}]', function ($path = null) use ($router) {
-  return view('react');
+  return view('react', [
+    "expose" => [
+      "APP_NAME" => env("APP_NAME")
+    ]
+  ]);
 });

@@ -17,34 +17,6 @@ class Pairs{
     return $rounds;
   }
 
-  static function fileToArray($filename)
-  {
-    if (!file_exists($filename)) {
-      throw new \Exception("The file '$filename' does not exist.");
-    }
-
-    $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-    return $lines;
-  }
-
-  static function fileStat($filename)
-  {
-    if (!file_exists($filename)) {
-      throw new \Exception("The file '$filename' does not exist.");
-    }
-
-    $stat = stat($filename);
-
-    $neededStat = [];
-
-    $neededStat["atime"] = date("r", $stat["atime"]);
-    $neededStat["mtime"] = date("r", $stat["mtime"]);
-    $neededStat["ctime"] = date("r", $stat["ctime"]);
-
-    return $neededStat;
-  }
-
   static function println($string = ''){
     echo "{$string}\n";
   }
@@ -112,8 +84,8 @@ class Pairs{
   }
 
   static function current(){
-    $members = self::fileToArray(storage_path('app/members.txt'));
-    $currents = self::fileToArray(storage_path('app/current.txt'));
+    $members = File::fileToArray(storage_path('app/members.txt'));
+    $currents = File::fileToArray(storage_path('app/current.txt'));
     $rotations = (integer)$currents[0];
 
     // below is where the engine starts
@@ -125,12 +97,23 @@ class Pairs{
   }
 
   static function currentAsciiTable(){
-    $currents = self::fileToArray(storage_path('app/current.txt'));
+    $currents = File::fileToArray(storage_path('app/current.txt'));
     $rotations = (int)$currents[0];
     $shuffledRowPairs = self::current();
     $disp = "pair up #" . $rotations . "\n";
-    $disp .= "generated: " . self::fileStat(storage_path('app/current.txt'))["mtime"] . "\n";
+    $disp .= "generated: " . date("r",File::fileStat(storage_path('app/current.txt'))["mtime"]) . "\n";
     $disp .= self::generateAsciiTable($shuffledRowPairs) . "\n";
     return $disp;
+  }
+
+  static function currentWithMeta() : array {
+    $currents = File::fileToArray(storage_path('app/current.txt'));
+    $rotations = (int)$currents[0];
+
+    return [
+      "pairs" => self::current(),
+      "generated" => gmdate(DATE_ATOM,File::fileStat(storage_path('app/current.txt'))["mtime"]),
+      "rotations" => $rotations,
+    ];
   }
 }

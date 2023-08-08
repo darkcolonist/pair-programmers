@@ -1,8 +1,9 @@
 import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, Grid, Typography } from '@mui/material';
 import defaultTheme from './themes/defaultTheme';
-import SomeComponent from './components/SomeComponent';
 import './App.css';
+import Dashboard from './components/Dashboard';
+import { green } from '@mui/material/colors';
 
 const theme = defaultTheme;
 
@@ -10,7 +11,16 @@ const App = function () {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <SomeComponent />
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h1" sx={{
+            color: green[800]
+          }}>{APP_NAME}</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Dashboard />
+        </Grid>
+      </Grid>
     </ThemeProvider>
   );
 }

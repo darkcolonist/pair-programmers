@@ -66,6 +66,42 @@ const defaultTheme = createTheme({
             fontSize: ".75rem",
             color: palette.tertiary.color()
           }
+        },
+        {
+          props: { variant: "h1" },
+          style: {
+            fontSize: "3em"
+          }
+        },
+        {
+          props: { variant: "h2" },
+          style: {
+            fontSize: "1.8em"
+          }
+        },
+        {
+          props: { variant: "h3" },
+          style: {
+            fontSize: "1.6em"
+          }
+        },
+        {
+          props: { variant: "h4" },
+          style: {
+            fontSize: "2em"
+          }
+        },
+        {
+          props: { variant: "h5" },
+          style: {
+            fontSize: "2em"
+          }
+        },
+        {
+          props: { variant: "h6" },
+          style: {
+            fontSize: "2em"
+          }
         }
       ]
     },
