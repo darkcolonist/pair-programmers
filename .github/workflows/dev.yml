@@ -9,7 +9,7 @@ on:
       - dev
 
 jobs:
-  auto_pull:
+  auto_pull_dev:
     runs-on: self-hosted
 
     steps:
