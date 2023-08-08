@@ -57,20 +57,12 @@ class Vite
 
   static function reactRefreshDependency(){
     return '<script type="module">
-      import RefreshRuntime from "http://localhost:5173/@react-refresh"
+      import RefreshRuntime from "'.self::getDevHost().'/@react-refresh"
       RefreshRuntime.injectIntoGlobalHook(window)
       window.$RefreshReg$ = () => {}
       window.$RefreshSig$ = () => (type) => type
       window.__vite_plugin_react_preamble_installed__ = true
     </script>';
-
-    // return "<script type=\"module\" >
-    //   import RefreshRuntime from '".self::getDevHost()."/@react-refresh'
-    //   RefreshRuntime.injectIntoGlobalHook(window)
-    //   window.\$RefreshReg$ = () => {}
-    //   window.\$RefreshSig$ = () => (type) => type
-    //   window.__vite_plugin_react_preamble_installed__ = true
-    // </script><script type=\"module\" src=\"".self::getDevHost()."/@vite/client\"></script>\"";
   }
 
   // Helpers to print tags

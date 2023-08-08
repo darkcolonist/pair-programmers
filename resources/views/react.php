@@ -8,7 +8,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <?php // echo htmlentities(\App\Helpers\Vite::html('resources/js/main.jsx')); ?>
     <?php echo \App\Helpers\Vite::assets('resources/js/main.jsx'); ?>
   </body>
 </html>

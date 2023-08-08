@@ -13,5 +13,11 @@ export default defineConfig({
     },
     outDir: 'public/dist/'
   },
+
+  // server: {
+  //   watch: {
+  //     usePolling: true,
+  //   },
+  // },
   plugins: [react()],
 })
