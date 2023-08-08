@@ -1,0 +1,19 @@
+name: Auto Pull on Dev Commit
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  auto_pull:
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull
+        working-directory: ${{ vars.STAGING_WORKDIR }}
+        run: |
+         git pull
