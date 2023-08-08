@@ -2,6 +2,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import defaultTheme from './themes/defaultTheme';
 import SomeComponent from './components/SomeComponent';
+import './App.css';
 
 const theme = defaultTheme;
 

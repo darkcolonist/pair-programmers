@@ -1,5 +1,5 @@
 const SomeComponent = function(){
-  return <>YO</>
+  return <>YOeeeex</>
 }
 
 export default SomeComponent;
