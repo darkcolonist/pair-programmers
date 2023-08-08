@@ -9,7 +9,13 @@ export default defineConfig({
     manifest: true,
     rollupOptions: {
       // overwrite default .html entry
-      input: './resources/js/main.jsx'
+      input: './resources/js/main.jsx',
+      onwarn(warning, warn) {
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+          return
+        }
+        warn(warning)
+      }
     },
     outDir: 'public/dist/'
   },
