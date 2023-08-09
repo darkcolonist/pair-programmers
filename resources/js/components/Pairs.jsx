@@ -1,36 +1,98 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Avatar, Box, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import { green, grey } from "@mui/material/colors";
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import React from "react";
+import gravatar from "gravatar";
 
-const cellWidth = "150px";
+const cellWidth = "170px";
+const unemphasizedCellWidth = "125px";
 const smallCellWidth = "25px";
 
-const NormalTableCell = function (props) {
+const smallAvatarSize = 24;
+const normalAvatarSize = 32;
+
+const CellText = function({emphasize = true, position = "left", ...props}) {
+  if (typeof props.children === 'string') {
+    const avatarSize = emphasize ? normalAvatarSize : smallAvatarSize;
+
+    const textArray = props.children
+      .split(',')
+      .map((item) => item.trim());
+
+    if(textArray.length > 1){
+      const avatarProps = {
+        variant: "rounded"
+        , style: {
+          backgroundColor: emphasize ? green[200] : grey[500]
+        }
+        , sx: {
+          width: avatarSize
+          , height: avatarSize
+        }
+        , alt: textArray[1]
+        , src: gravatar.url(textArray[1])
+      };
+
+      const avatar = emphasize ? <Avatar {...avatarProps} /> : null;
+
+      let content = <React.Fragment>
+        {avatar}
+        <span>{textArray[0]}</span>
+      </React.Fragment>;
+
+      if(position === 'left')
+        content = <React.Fragment>
+          <span>{textArray[0]}</span>
+          {avatar}
+        </React.Fragment>
+
+      return <Stack direction="row"
+          spacing={emphasize ? 1 : .5}
+          alignItems="center"
+          justifyContent={position === "left" ? "right" : "left"}>
+        {content}
+      </Stack>
+    }else{
+      return textArray[0];
+    }
+  } else {
+    return props.children;
+  }
+}
+
+const getCellWidth = function({small, emphasize}){
+  if(emphasize){
+    return small ? smallCellWidth : cellWidth;
+  }else{
+    return small ? smallCellWidth : unemphasizedCellWidth;
+  }
+}
+
+const NormalTableCell = function({emphasize, position, ...props}) {
   return <TableCell {...props}
     style={{
       ...props.style,
       borderBottom: 'none'
     }}>
     <Typography variant="p" sx={{
-      width: props.small ? smallCellWidth : cellWidth,
+      width: getCellWidth({small: props.small, emphasize}),
       display: "inline-block",
       color: grey[500]
     }}>
-      {props.children}
+      <CellText position={position} emphasize={emphasize}>{props.children}</CellText>
     </Typography>
   </TableCell>
 }
 
-const EmphasizedTableCell = function(props){
+const EmphasizedTableCell = function({emphasize, position, ...props}){
   return <TableCell {...props}>
     <Typography variant="h3" sx={{
       color: green[200],
       textTransform: "capitalize",
-      width: props.small ? smallCellWidth : cellWidth,
+      width: getCellWidth({small: props.small, emphasize}),
       display: "inline-block"
     }}>
-      {props.children}
+      <CellText position={position} emphasize={emphasize}>{props.children}</CellText>
     </Typography>
   </TableCell>
 }
@@ -45,19 +107,19 @@ const TableRows = function({rows, emphasize}){
 
   const renderRows = rows.map((row, rowIndex) =>
     <TableRow key={rowIndex}>
-      <CellComponent align="right">{row[0]}</CellComponent>
+      <CellComponent align="right" emphasize={emphasize}>{row[0]}</CellComponent>
       <CellComponent align="center" small={1} style={{
         width: smallCellWidth,
         padding: "0px"
       }}><SwapHorizIcon /></CellComponent>
-      <CellComponent>{row[1]}</CellComponent>
+      <CellComponent emphasize={emphasize} position="right">{row[1]}</CellComponent>
     </TableRow>
   )
 
   return renderRows;
 }
 
-const Pairs = function({title, pairs = [], emphasize = false}){
+const Pairs = function({title, width = "100%", pairs = [], emphasize = false}){
   const tableContainerProps = emphasize ?
     {
       component: Paper,
@@ -71,7 +133,7 @@ const Pairs = function({title, pairs = [], emphasize = false}){
       size: "small"
     }
 
-  return <React.Fragment>
+  return <Box sx={{ width }}>
     <Typography variant={emphasize ? "h2" : "h4"} sx={{
       color: emphasize ? green[500] : grey[600],
       textTransform: emphasize ? "uppercase" : "capitalize"
@@ -83,7 +145,7 @@ const Pairs = function({title, pairs = [], emphasize = false}){
         </TableBody>
       </Table>
     </TableContainer>
-  </React.Fragment>
+  </Box>
 }
 
 export default Pairs;
