@@ -2,6 +2,7 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Helpers\Discord;
 use App\Helpers\Pairs;
 
 /*
@@ -34,9 +35,18 @@ $router->get('/pairs', function () use ($router) {
 
 $router->group(['prefix' => 'api'], function () use ($router) {
   $router->post('discord/interactions', function () {
-    return response(Pairs::currentAsciiTable(), 200, [
-      "content-type" => "text/plain"
-    ]);
+    // return response(Pairs::currentAsciiTable(), 200, [
+    //   "content-type" => "text/plain"
+    // ]);
+    $result = Discord::verifyEndpoint();
+
+    return response(
+      $result['payload'],
+      $result['code'],
+      [
+        'content-type' => 'application/json'
+      ]
+    );
   });
 });
 
