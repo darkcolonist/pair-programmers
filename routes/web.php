@@ -15,8 +15,28 @@ use App\Helpers\Pairs;
 |
 */
 
-$router->get('/', function () use ($router) {
-    return response(Pairs::currentAsciiTable(), 200, [
-      "content-type" => "text/plain"
-    ]);
+$router->get('/legacy', function () use ($router) {
+  return response(Pairs::currentAsciiTable(), 200, [
+    "content-type" => "text/plain"
+  ]);
+});
+
+$router->get('/pairs', function () use ($router) {
+  if(env("APP_ENV") === "local" && env("APP_DEBUG") === true)
+    sleep(2);
+
+  return response()->json([
+    "current" => Pairs::currentWithMeta(),
+    "yesterday" => Pairs::custom(-1),
+    "tomorrow" => Pairs::custom(1),
+  ]);
+});
+
+// Catch all route for SPA
+$router->get('[{path:.*}]', function ($path = null) use ($router) {
+  return view('react', [
+    "expose" => [
+      "APP_NAME" => env("APP_NAME")
+    ]
+  ]);
 });
