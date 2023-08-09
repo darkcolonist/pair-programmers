@@ -32,6 +32,14 @@ $router->get('/pairs', function () use ($router) {
   ]);
 });
 
+$router->group(['prefix' => 'api'], function () use ($router) {
+  $router->post('discord/interactions', function () {
+    return response(Pairs::currentAsciiTable(), 200, [
+      "content-type" => "text/plain"
+    ]);
+  });
+});
+
 // Catch all route for SPA
 $router->get('[{path:.*}]', function ($path = null) use ($router) {
   return view('react', [
