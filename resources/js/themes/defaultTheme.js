@@ -56,6 +56,10 @@ const defaultTheme = createTheme({
           '&.debugLogTitle': {
             color: green[400]
           },
+          '&.footerInfoCode': {
+            fontFamily: 'monospace',
+            color: green[700]
+          },
         },
       },
 

@@ -31,17 +31,17 @@ const EmphasizedTableCell = function(props){
 }
 
 const TableRows = function({rows, emphasize}){
+  const CellComponent = emphasize ? EmphasizedTableCell : NormalTableCell;
+
   if(rows.length === 0)
     return <TableRow>
-      <TableCell>empty</TableCell>
+      <CellComponent align="center">table empty</CellComponent>
     </TableRow>
-
-  const CellComponent = emphasize ? EmphasizedTableCell : NormalTableCell;
 
   const renderRows = rows.map((row, rowIndex) =>
     <TableRow key={rowIndex}>
       <CellComponent align="right">{row[0]}</CellComponent>
-      <CellComponent align="center" small style={{
+      <CellComponent align="center" small={1} style={{
         width: smallCellWidth
       }}><SwapHorizIcon /></CellComponent>
       <CellComponent>{row[1]}</CellComponent>
@@ -51,7 +51,7 @@ const TableRows = function({rows, emphasize}){
   return renderRows;
 }
 
-const Pairs = function({title, pairs, emphasize = false}){
+const Pairs = function({title, pairs = [], emphasize = false}){
   return <React.Fragment>
     <Typography variant="h2" sx={{
       color: emphasize ? green[500] : null,

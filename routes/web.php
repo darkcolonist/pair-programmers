@@ -22,6 +22,9 @@ $router->get('/legacy', function () use ($router) {
 });
 
 $router->get('/pairs', function () use ($router) {
+  if(env("APP_ENV") === "local" && env("APP_DEBUG") === true)
+    sleep(2);
+
   return response()->json([
     "current" => Pairs::currentWithMeta()
   ]);

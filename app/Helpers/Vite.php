@@ -8,7 +8,7 @@ class Vite
   const SUB_DIRECTORY = "dist";
 
   static function getDevHost(){
-    return env("VITE_URL", "http://localhost:5173/".self::SUB_DIRECTORY);
+    return env("VITE_URL", env("APP_URL").":5173/".self::SUB_DIRECTORY);
   }
 
   static function getProdPath($file){
