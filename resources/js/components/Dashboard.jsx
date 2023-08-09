@@ -10,7 +10,7 @@ const Dashboard = function () {
   const [currentData,setCurrentData] = React.useState([]);
 
   React.useEffect(() => {
-    axios.get('pairs')
+    axios.get('/pairs')
       .then(response => {
         setCurrentData(response.data);
         setDataLoaded(true);
