@@ -32,10 +32,10 @@ const Dashboard = function () {
       </Stack>
     </Grid>
     <Grid item xs={6}>
-      <Pairs title="yesterday" pairs={currentData.yesterday} />
+      <Pairs title="previous" pairs={currentData.yesterday} />
     </Grid>
     <Grid item xs={6}>
-      <Pairs title="tomorrow" pairs={currentData.tomorrow} />
+      <Pairs title="next" pairs={currentData.tomorrow} />
     </Grid>
   </Grid>
 }
