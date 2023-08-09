@@ -38,6 +38,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     // return response(Pairs::currentAsciiTable(), 200, [
     //   "content-type" => "text/plain"
     // ]);
+
+    Log::info("endpoint called: ".json_encode(file_get_contents('php://input')));
     $result = Discord::verifyEndpoint();
 
     return response(
