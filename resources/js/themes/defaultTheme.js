@@ -92,19 +92,19 @@ const defaultTheme = createTheme({
         {
           props: { variant: "h4" },
           style: {
-            fontSize: "2em"
+            fontSize: "1.2em"
           }
         },
         {
           props: { variant: "h5" },
           style: {
-            fontSize: "2em"
+            fontSize: "1.1em"
           }
         },
         {
           props: { variant: "h6" },
           style: {
-            fontSize: "2em"
+            fontSize: "1em"
           }
         }
       ]

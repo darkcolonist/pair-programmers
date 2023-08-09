@@ -31,6 +31,12 @@ const Dashboard = function () {
         <Typography className="footerInfoCode">Generated on <Moment format="dddd, MMMM Do YYYY, h:mm:ss a">{currentData.generated}</Moment></Typography>
       </Stack>
     </Grid>
+    <Grid item xs={6}>
+      <Pairs title="yesterday" pairs={currentData.pairs} />
+    </Grid>
+    <Grid item xs={6}>
+      <Pairs title="tomorrow" pairs={currentData.pairs} />
+    </Grid>
   </Grid>
 }
 

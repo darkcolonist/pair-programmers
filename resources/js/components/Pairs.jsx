@@ -1,16 +1,21 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
-import { green } from "@mui/material/colors";
+import { green, grey } from "@mui/material/colors";
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import React from "react";
 
 const cellWidth = "150px";
-const smallCellWidth = "50px";
+const smallCellWidth = "25px";
 
 const NormalTableCell = function (props) {
-  return <TableCell {...props}>
-    <Typography variant="h3" sx={{
+  return <TableCell {...props}
+    style={{
+      ...props.style,
+      borderBottom: 'none'
+    }}>
+    <Typography variant="p" sx={{
       width: props.small ? smallCellWidth : cellWidth,
-      display: "inline-block"
+      display: "inline-block",
+      color: grey[500]
     }}>
       {props.children}
     </Typography>
@@ -42,7 +47,8 @@ const TableRows = function({rows, emphasize}){
     <TableRow key={rowIndex}>
       <CellComponent align="right">{row[0]}</CellComponent>
       <CellComponent align="center" small={1} style={{
-        width: smallCellWidth
+        width: smallCellWidth,
+        padding: "0px"
       }}><SwapHorizIcon /></CellComponent>
       <CellComponent>{row[1]}</CellComponent>
     </TableRow>
@@ -52,13 +58,26 @@ const TableRows = function({rows, emphasize}){
 }
 
 const Pairs = function({title, pairs = [], emphasize = false}){
+  const tableContainerProps = emphasize ?
+    {
+      component: Paper,
+      elevation: 1
+    } :
+    {}
+
+  const tableProps = emphasize ?
+    {} :
+    {
+      size: "small"
+    }
+
   return <React.Fragment>
-    <Typography variant="h2" sx={{
-      color: emphasize ? green[500] : null,
+    <Typography variant={emphasize ? "h2" : "h4"} sx={{
+      color: emphasize ? green[500] : grey[600],
       textTransform: "uppercase"
     }}>{title}</Typography>
-    <TableContainer component={Paper} elevation={1}>
-      <Table>
+    <TableContainer {...tableContainerProps}>
+      <Table {...tableProps}>
         <TableBody>
           <TableRows rows={pairs} emphasize={emphasize} />
         </TableBody>
