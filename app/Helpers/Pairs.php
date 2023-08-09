@@ -4,6 +4,12 @@ namespace App\Helpers;
 class Pairs{
   static function createPairs($members){
     $n = count($members);
+
+    if($n % 2 != 0){
+      $members[] = "-";
+      $n++;
+    }
+
     $rounds = array();
     for ($r = 0; $r < $n - 1; $r++) {
       for ($i = 0; $i < $n / 2; $i++) {
