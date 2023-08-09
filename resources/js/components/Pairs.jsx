@@ -1,4 +1,4 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
+import { Avatar, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import { green, grey } from "@mui/material/colors";
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import React from "react";
@@ -6,7 +6,57 @@ import React from "react";
 const cellWidth = "150px";
 const smallCellWidth = "25px";
 
-const NormalTableCell = function (props) {
+const smallAvatarSize = 24;
+const normalAvatarSize = 32;
+
+const CellText = function({emphasize = true, position = "left", ...props}) {
+  if (typeof props.children === 'string') {
+    const avatarSize = emphasize ? normalAvatarSize : smallAvatarSize;
+
+    const textArray = props.children
+      .split(',')
+      .map((item) => item.trim());
+
+    const avatarProps = {
+      variant: "rounded"
+      ,style: {
+        backgroundColor: emphasize ? green[200] : grey[500]
+      }
+      ,sx: {
+        width: avatarSize
+        , height: avatarSize
+      }
+      , alt: textArray[1]
+      , src: "/broken.jpg"
+    };
+
+    if(textArray.length > 1){
+      const content = position === "left" ?
+        <React.Fragment>
+          <span>{textArray[0]}</span>
+          <Avatar {...avatarProps} />
+        </React.Fragment>
+      :
+        <React.Fragment>
+          <Avatar {...avatarProps} />
+          <span>{textArray[0]}</span>
+        </React.Fragment>
+
+      return <Stack direction="row"
+        spacing={emphasize ? 1 : .5}
+        alignItems="center"
+        justifyContent={position === "left" ? "right" : "left"}>
+        {content}
+      </Stack>
+    }else{
+      return textArray[0];
+    }
+  } else {
+    return props.children;
+  }
+}
+
+const NormalTableCell = function ({emphasize, ...props}) {
   return <TableCell {...props}
     style={{
       ...props.style,
@@ -17,12 +67,12 @@ const NormalTableCell = function (props) {
       display: "inline-block",
       color: grey[500]
     }}>
-      {props.children}
+      <CellText position={props.position} emphasize={emphasize}>{props.children}</CellText>
     </Typography>
   </TableCell>
 }
 
-const EmphasizedTableCell = function(props){
+const EmphasizedTableCell = function({emphasize, ...props}){
   return <TableCell {...props}>
     <Typography variant="h3" sx={{
       color: green[200],
@@ -30,7 +80,7 @@ const EmphasizedTableCell = function(props){
       width: props.small ? smallCellWidth : cellWidth,
       display: "inline-block"
     }}>
-      {props.children}
+      <CellText position={props.position} emphasize={emphasize}>{props.children}</CellText>
     </Typography>
   </TableCell>
 }
@@ -45,12 +95,12 @@ const TableRows = function({rows, emphasize}){
 
   const renderRows = rows.map((row, rowIndex) =>
     <TableRow key={rowIndex}>
-      <CellComponent align="right">{row[0]}</CellComponent>
+      <CellComponent align="right" emphasize={emphasize}>{row[0]}</CellComponent>
       <CellComponent align="center" small={1} style={{
         width: smallCellWidth,
         padding: "0px"
       }}><SwapHorizIcon /></CellComponent>
-      <CellComponent>{row[1]}</CellComponent>
+      <CellComponent emphasize={emphasize} position="right">{row[1]}</CellComponent>
     </TableRow>
   )
 
