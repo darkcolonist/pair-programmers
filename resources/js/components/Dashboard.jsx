@@ -47,12 +47,12 @@ const Dashboard = function () {
     </Grid>
 
     <Grid item xs={2} />
-    <Grid item xs={4}>
+    <Grid item xs={12}>
       <Pairs title="previous" pairs={currentData.yesterday} />
     </Grid>
-    <Grid item xs={4}>
+    {/* <Grid item xs={4}>
       <Pairs title="next" pairs={currentData.tomorrow} />
-    </Grid>
+    </Grid> */}
     <Grid item xs={2} />
   </Grid>
 }
