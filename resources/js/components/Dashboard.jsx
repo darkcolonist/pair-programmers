@@ -11,7 +11,7 @@ const Dashboard = function () {
   React.useEffect(() => {
     axios.get('pairs')
       .then(response => {
-        setCurrentData(response.data.current);
+        setCurrentData(response.data);
         setDataLoaded(true);
       });
   },[]);
@@ -21,21 +21,21 @@ const Dashboard = function () {
 
   return <Grid container spacing={2}>
     <Grid item xs={12}>
-      <Pairs title="today" emphasize pairs={currentData.pairs}/>
+      <Pairs title="today" emphasize pairs={currentData.current.pairs}/>
     </Grid>
     <Grid item xs={12}>
       <Stack direction="row" justifyContent="right"
         divider={<Divider orientation="vertical" flexItem />}
         spacing={2}>
-        <Typography className="footerInfoCode">Pair up #{currentData.rotations}</Typography>
-        <Typography className="footerInfoCode">Generated on <Moment format="dddd, MMMM Do YYYY, h:mm:ss a">{currentData.generated}</Moment></Typography>
+        <Typography className="footerInfoCode">Pair up #{currentData.current.rotations}</Typography>
+        <Typography className="footerInfoCode">Generated on <Moment format="dddd, MMMM Do YYYY, h:mm:ss a">{currentData.current.generated}</Moment></Typography>
       </Stack>
     </Grid>
     <Grid item xs={6}>
-      <Pairs title="yesterday" pairs={currentData.pairs} />
+      <Pairs title="yesterday" pairs={currentData.yesterday} />
     </Grid>
     <Grid item xs={6}>
-      <Pairs title="tomorrow" pairs={currentData.pairs} />
+      <Pairs title="tomorrow" pairs={currentData.tomorrow} />
     </Grid>
   </Grid>
 }

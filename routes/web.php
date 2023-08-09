@@ -26,7 +26,9 @@ $router->get('/pairs', function () use ($router) {
     sleep(2);
 
   return response()->json([
-    "current" => Pairs::currentWithMeta()
+    "current" => Pairs::currentWithMeta(),
+    "yesterday" => Pairs::custom(-1),
+    "tomorrow" => Pairs::custom(1),
   ]);
 });
 

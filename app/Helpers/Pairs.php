@@ -96,6 +96,22 @@ class Pairs{
     return $shuffledRowPairs;
   }
 
+  static function custom($incrementToCurrent){
+    $members = File::fileToArray(storage_path('app/members.txt'));
+    $currents = File::fileToArray(storage_path('app/current.txt'));
+    $rotations = (int)$currents[0];
+
+    $rotations += $incrementToCurrent;
+    if($rotations < 0)
+      $rotations = 0;
+
+    $pairs = self::createPairs($members);
+    $currentPair = $pairs[$rotations % count($pairs)];
+    $shuffledRowPairs = self::shuffleAll($currentPair);
+
+    return $shuffledRowPairs;
+  }
+
   static function currentAsciiTable(){
     $currents = File::fileToArray(storage_path('app/current.txt'));
     $rotations = (int)$currents[0];

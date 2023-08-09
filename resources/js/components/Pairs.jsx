@@ -26,7 +26,7 @@ const EmphasizedTableCell = function(props){
   return <TableCell {...props}>
     <Typography variant="h3" sx={{
       color: green[200],
-      textTransform: "title",
+      textTransform: "capitalize",
       width: props.small ? smallCellWidth : cellWidth,
       display: "inline-block"
     }}>
@@ -74,7 +74,7 @@ const Pairs = function({title, pairs = [], emphasize = false}){
   return <React.Fragment>
     <Typography variant={emphasize ? "h2" : "h4"} sx={{
       color: emphasize ? green[500] : grey[600],
-      textTransform: "uppercase"
+      textTransform: emphasize ? "uppercase" : "capitalize"
     }}>{title}</Typography>
     <TableContainer {...tableContainerProps}>
       <Table {...tableProps}>
