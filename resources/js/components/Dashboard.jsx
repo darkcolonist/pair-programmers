@@ -4,6 +4,7 @@ import Pairs from "./Pairs";
 import LoadingTable from "./LoadingTable";
 import Moment from "./Moment";
 import { grey } from "@mui/material/colors";
+import GithubRepositoryChip from "./GithubRepositoryChip";
 
 const Dashboard = function () {
   const [dataLoaded,setDataLoaded] = React.useState(false);
@@ -28,11 +29,13 @@ const Dashboard = function () {
       <Pairs width="70%" title="today" emphasize pairs={currentData.current.pairs}/>
     </Grid>
     <Grid item xs={12}>
-      <Stack direction="row" justifyContent="center"
-        divider={<Divider orientation="vertical" />}
+      <Stack direction="row"
+        justifyContent="center"
+        alignItems="center"
         spacing={2}>
         <Typography className="footerInfoCode">Pair up #{currentData.current.rotations}</Typography>
         <Typography className="footerInfoCode">Generated on <Moment format="dddd, MMMM Do YYYY, h:mm:ss a">{currentData.current.generated}</Moment></Typography>
+        <GithubRepositoryChip />
       </Stack>
     </Grid>
 

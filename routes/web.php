@@ -16,6 +16,14 @@ use App\Helpers\Pairs;
 |
 */
 
+$router->group(['prefix' => 'test', "middleware" => ['test']], function () use ($router) {
+  $router->get('discord/message', function () {
+    return response(Discord::getCurrentMessage(), 200, [
+      "content-type" => "text/plain"
+    ]);
+  });
+});
+
 $router->get('/legacy', function () use ($router) {
   return response(Pairs::currentAsciiTable(), 200, [
     "content-type" => "text/plain"
