@@ -2,7 +2,7 @@
 namespace App\Http\Middleware;
 use Closure;
 
-class TestMiddleWare
+class TestMiddleware
 {
     /**
      * Run the request filter.
