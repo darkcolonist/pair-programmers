@@ -107,7 +107,7 @@ class Pairs{
     return $shuffledRowPairs;
   }
 
-  static function custom($incrementToCurrent, $mode = "normal", $overrideCurrent = null){
+  static function custom($incrementToCurrent, $mode = "normal", $overrideCurrent = null, $shuffleMembersBySeason = false){
     $members = File::fileToArray(storage_path('app/members.txt'));
     $rotations = $overrideCurrent;
 
@@ -115,6 +115,9 @@ class Pairs{
       $currents = File::fileToArray(storage_path('app/current.txt'));
       $rotations = (int)$currents[0];
     }
+
+    if($shuffleMembersBySeason)
+      $members = self::fisherYatesShuffle($members, self::getSeason(count($members), $rotations));
 
     if ($mode == "reduced") {
       $members = self::reduceMembersToFirstNameOnly($members);
@@ -173,15 +176,24 @@ class Pairs{
   }
 
   private static function shortenNameForSimulation($name){
-    return substr(strtolower(str_replace(' ', '', $name)), 0, 3);
+    return substr(strtoupper(str_replace(' ', '', $name)), 0, 3);
+  }
+
+  private static function getSeason($membersCount, $current){
+    return floor($current/ ($membersCount-1));
   }
 
   static function simulations($count = 1) : array {
+    $members = File::fileToArray(storage_path('app/members.txt'));
     $pairs = [];
     for ($i=0; $i < $count; $i++) {
-      $pair = self::custom($i, "reduced", 0);
+      $season = self::getSeason(count($members), $i);
+      $pair = self::custom($i, "reduced", 0, true);
 
       $newPair = [];
+      $newPair[] = "rotation $i";
+      // $newPair[] = "modulo ". $i % (count($members) - 1);
+      $newPair[] = "season $season";
       foreach ($pair as $pairValue) {
         $left = self::shortenNameForSimulation($pairValue[0]);
         $right = self::shortenNameForSimulation($pairValue[1]);
