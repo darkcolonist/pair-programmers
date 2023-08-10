@@ -33,13 +33,22 @@ $router->get('/pairs', function () use ($router) {
   ]);
 });
 
-$router->group(['prefix' => 'api'], function () use ($router) {
-  $router->post('discord/interactions', function () {
-    // return response(Pairs::currentAsciiTable(), 200, [
-    //   "content-type" => "text/plain"
-    // ]);
+$router->group(['prefix' => 'api/discord'], function () use ($router) {
+  $router->post('interactions', function () {
+    Log::info(request()->path() . " " . json_encode(file_get_contents('php://input')));
+    $result = Discord::verifyEndpoint();
 
-    Log::info("endpoint called: ".json_encode(file_get_contents('php://input')));
+    return response(
+      $result['payload'],
+      $result['code'],
+      [
+        'content-type' => 'application/json'
+      ]
+    );
+  });
+
+  $router->post('[{path:.*}]', function () {
+    Log::info(request()->path() . " " . json_encode(file_get_contents('php://input')));
     $result = Discord::verifyEndpoint();
 
     return response(
