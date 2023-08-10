@@ -22,6 +22,12 @@ $router->get('/legacy', function () use ($router) {
   ]);
 });
 
+$router->get('/legacy/slim', function () use ($router) {
+  return response(Pairs::currentAsciiTableSlim(), 200, [
+    "content-type" => "text/plain"
+  ]);
+});
+
 $router->get('/pairs', function () use ($router) {
   if(env("APP_ENV") === "local" && env("APP_DEBUG") === true)
     sleep(2);
@@ -31,34 +37,6 @@ $router->get('/pairs', function () use ($router) {
     "yesterday" => Pairs::custom(-1),
     "tomorrow" => Pairs::custom(1),
   ]);
-});
-
-$router->group(['prefix' => 'api/discord'], function () use ($router) {
-  $router->post('interactions', function () {
-    Log::info(request()->path() . " " . json_encode(file_get_contents('php://input')));
-    $result = Discord::verifyEndpoint();
-
-    return response(
-      $result['payload'],
-      $result['code'],
-      [
-        'content-type' => 'application/json'
-      ]
-    );
-  });
-
-  $router->post('[{path:.*}]', function () {
-    Log::info(request()->path() . " " . json_encode(file_get_contents('php://input')));
-    $result = Discord::verifyEndpoint();
-
-    return response(
-      $result['payload'],
-      $result['code'],
-      [
-        'content-type' => 'application/json'
-      ]
-    );
-  });
 });
 
 // Catch all route for SPA

@@ -89,8 +89,13 @@ class Pairs{
     return rtrim($table, "\n");
   }
 
-  static function current(){
+  static function current($mode = "normal"){
     $members = File::fileToArray(storage_path('app/members.txt'));
+
+    if($mode == "reduced"){
+      $members = self::reduceMembersToFirstNameOnly($members);
+    }
+
     $currents = File::fileToArray(storage_path('app/current.txt'));
     $rotations = (integer)$currents[0];
 
@@ -124,6 +129,26 @@ class Pairs{
     $shuffledRowPairs = self::current();
     $disp = "pair up #" . $rotations . "\n";
     $disp .= "generated: " . date("r",File::fileStat(storage_path('app/current.txt'))["mtime"]) . "\n";
+    $disp .= self::generateAsciiTable($shuffledRowPairs) . "\n";
+    return $disp;
+  }
+
+  private static function reduceMembersToFirstNameOnly($members){
+    $reduced = [];
+    foreach ($members as $key => $value) {
+      $fields = explode(',', $value);
+      $reduced[$key] = $fields[0];
+    }
+    return $reduced;
+  }
+
+  static function currentAsciiTableSlim()
+  {
+    $currents = File::fileToArray(storage_path('app/current.txt'));
+    $rotations = (int)$currents[0];
+    $shuffledRowPairs = self::current("reduced");
+    $disp = "pair up #" . $rotations . "\n";
+    $disp .= "generated: " . date("D, d M Y H:ia O", File::fileStat(storage_path('app/current.txt'))["mtime"]) . "\n";
     $disp .= self::generateAsciiTable($shuffledRowPairs) . "\n";
     return $disp;
   }
