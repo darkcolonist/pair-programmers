@@ -148,7 +148,7 @@ class Pairs{
     $rotations = (int)$currents[0];
     $shuffledRowPairs = self::current("reduced");
     $disp = "pair up #" . $rotations . "\n";
-    $disp .= "generated: " . date("D, d M Y H:ia O", File::fileStat(storage_path('app/current.txt'))["mtime"]) . "\n";
+    $disp .= "generated: " . date("D, d M Y g:ia O", File::fileStat(storage_path('app/current.txt'))["mtime"]) . "\n";
     $disp .= self::generateAsciiTable($shuffledRowPairs) . "\n";
     return $disp;
   }
