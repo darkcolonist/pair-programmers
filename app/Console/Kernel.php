@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
       \App\Console\Commands\DecrementCommand::class,
-      \App\Console\Commands\IncrementCommand::class
+      \App\Console\Commands\IncrementCommand::class,
+      \App\Console\Commands\DiscordSendCurrentCommand::class,
     ];
 
     /**
