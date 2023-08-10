@@ -107,10 +107,18 @@ class Pairs{
     return $shuffledRowPairs;
   }
 
-  static function custom($incrementToCurrent){
+  static function custom($incrementToCurrent, $mode = "normal", $overrideCurrent = null){
     $members = File::fileToArray(storage_path('app/members.txt'));
-    $currents = File::fileToArray(storage_path('app/current.txt'));
-    $rotations = (int)$currents[0];
+    $rotations = $overrideCurrent;
+
+    if($rotations === null){
+      $currents = File::fileToArray(storage_path('app/current.txt'));
+      $rotations = (int)$currents[0];
+    }
+
+    if ($mode == "reduced") {
+      $members = self::reduceMembersToFirstNameOnly($members);
+    }
 
     $rotations += $incrementToCurrent;
     if($rotations < 0)
@@ -161,6 +169,30 @@ class Pairs{
       "pairs" => self::current(),
       "generated" => gmdate(DATE_ATOM,File::fileStat(storage_path('app/current.txt'))["mtime"]),
       "rotations" => $rotations,
+    ];
+  }
+
+  private static function shortenNameForSimulation($name){
+    return substr(strtolower(str_replace(' ', '', $name)), 0, 3);
+  }
+
+  static function simulations($count = 1) : array {
+    $pairs = [];
+    for ($i=0; $i < $count; $i++) {
+      $pair = self::custom($i, "reduced", 0);
+
+      $newPair = [];
+      foreach ($pair as $pairValue) {
+        $left = self::shortenNameForSimulation($pairValue[0]);
+        $right = self::shortenNameForSimulation($pairValue[1]);
+        $newPair[] = "$left-$right";
+      }
+
+      $pairs[] = $newPair;
+    }
+
+    return [
+      "pairs" => $pairs
     ];
   }
 }

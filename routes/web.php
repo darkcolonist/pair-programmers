@@ -22,6 +22,12 @@ $router->group(['prefix' => 'test', "middleware" => ['test']], function () use (
       "content-type" => "text/plain"
     ]);
   });
+
+  $router->get('pairs/simulation', function () {
+    return response(Pairs::simulations(30), 200, [
+      "content-type" => "text/plain"
+    ]);
+  });
 });
 
 $router->get('/legacy', function () use ($router) {
