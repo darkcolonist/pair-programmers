@@ -2,6 +2,7 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Helpers\Discord;
 use App\Helpers\Pairs;
 
 /*
@@ -30,6 +31,34 @@ $router->get('/pairs', function () use ($router) {
     "yesterday" => Pairs::custom(-1),
     "tomorrow" => Pairs::custom(1),
   ]);
+});
+
+$router->group(['prefix' => 'api/discord'], function () use ($router) {
+  $router->post('interactions', function () {
+    Log::info(request()->path() . " " . json_encode(file_get_contents('php://input')));
+    $result = Discord::verifyEndpoint();
+
+    return response(
+      $result['payload'],
+      $result['code'],
+      [
+        'content-type' => 'application/json'
+      ]
+    );
+  });
+
+  $router->post('[{path:.*}]', function () {
+    Log::info(request()->path() . " " . json_encode(file_get_contents('php://input')));
+    $result = Discord::verifyEndpoint();
+
+    return response(
+      $result['payload'],
+      $result['code'],
+      [
+        'content-type' => 'application/json'
+      ]
+    );
+  });
 });
 
 // Catch all route for SPA
