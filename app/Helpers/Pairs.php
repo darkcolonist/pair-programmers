@@ -213,7 +213,10 @@ class Pairs{
       foreach ($pair as $pairValue) {
         $left = self::nameToIntegerForSimulation($pairValue[0]);
         $right = self::nameToIntegerForSimulation($pairValue[1]);
-        $newPair[] = $left + $right;
+        $newPair[] = "[".($left + $right)."]";
+        $left = self::shortenNameForSimulation($pairValue[0]);
+        $right = self::shortenNameForSimulation($pairValue[1]);
+        $newPair[] = $left . "-" . $right;
       }
 
       $pairs[] = implode(" | ",$newPair);
