@@ -184,31 +184,39 @@ class Pairs{
     return substr(strtoupper(str_replace(' ', '', $name)), 0, 3);
   }
 
+  private static function nameToIntegerForSimulation($name){
+    // return substr(strtoupper(str_replace(' ', '', $name)), 0, 3);
+    $hash = md5($name);
+    $intVal = hexdec($hash);
+    $intVal = substr($intVal, 0, 7);
+    $intVal = $intVal * 100000;
+    return $intVal;
+  }
+
   private static function getSeason($membersCount, $current){
     return floor($current/ ($membersCount-1));
   }
 
   static function simulations($count = 1) : array {
     $members = File::fileToArray(storage_path('app/members.txt'));
+    $shuffleMembersSeed = env('APP_SHUFFLE_SEED');
     $pairs = [];
     for ($i=0; $i < $count; $i++) {
       $season = self::getSeason(count($members), $i);
 
-      $pair = self::custom($i, "reduced", 0, $season == 0 ? null : $season);
+      $pair = self::custom($i, "reduced", 0, $season == 0 ? null : $season + $shuffleMembersSeed);
 
       $newPair = [];
       $newPair[] = "rotation $i";
       // $newPair[] = "modulo ". $i % (count($members) - 1);
       $newPair[] = "season $season";
       foreach ($pair as $pairValue) {
-        $left = self::shortenNameForSimulation($pairValue[0]);
-        $right = self::shortenNameForSimulation($pairValue[1]);
-        // $left = $pairValue[0];
-        // $right = $pairValue[1];
-        $newPair[] = "$left-$right";
+        $left = self::nameToIntegerForSimulation($pairValue[0]);
+        $right = self::nameToIntegerForSimulation($pairValue[1]);
+        $newPair[] = $left + $right;
       }
 
-      $pairs[] = $newPair;
+      $pairs[] = implode(" | ",$newPair);
     }
 
     return [
