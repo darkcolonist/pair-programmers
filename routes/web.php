@@ -23,8 +23,9 @@ $router->group(['prefix' => 'test', "middleware" => ['test']], function () use (
     ]);
   });
 
-  $router->get('pairs/simulation', function () {
-    return response(Pairs::simulations(30), 200, [
+  $router->get('pairs/simulation[/{count}]', function ($count = 5) {
+  // $router->get('pairs/simulation/{?count}', function () {
+    return response(Pairs::simulations($count), 200, [
       "content-type" => "text/plain"
     ]);
   });

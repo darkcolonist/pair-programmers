@@ -107,7 +107,7 @@ class Pairs{
     return $shuffledRowPairs;
   }
 
-  static function custom($incrementToCurrent, $mode = "normal", $overrideCurrent = null, $shuffleMembersBySeason = false){
+  static function custom($incrementToCurrent, $mode = "normal", $overrideCurrent = null, $shuffleMembersSeed = null){
     $members = File::fileToArray(storage_path('app/members.txt'));
     $rotations = $overrideCurrent;
 
@@ -116,8 +116,8 @@ class Pairs{
       $rotations = (int)$currents[0];
     }
 
-    if($shuffleMembersBySeason)
-      $members = self::fisherYatesShuffle($members, self::getSeason(count($members), $rotations));
+    if($shuffleMembersSeed !== null)
+      $members = self::fisherYatesShuffle($members, $shuffleMembersSeed);
 
     if ($mode == "reduced") {
       $members = self::reduceMembersToFirstNameOnly($members);
@@ -129,9 +129,14 @@ class Pairs{
 
     $pairs = self::createPairs($members);
     $currentPair = $pairs[$rotations % count($pairs)];
-    $shuffledRowPairs = self::shuffleAll($currentPair);
 
-    return $shuffledRowPairs;
+    if($shuffleMembersSeed === null){
+      return $currentPair;
+    }else{
+      $shuffledRowPairs = self::shuffleAll($currentPair);
+
+      return $shuffledRowPairs;
+    }
   }
 
   static function currentAsciiTable(){
@@ -188,7 +193,8 @@ class Pairs{
     $pairs = [];
     for ($i=0; $i < $count; $i++) {
       $season = self::getSeason(count($members), $i);
-      $pair = self::custom($i, "reduced", 0, true);
+
+      $pair = self::custom($i, "reduced", 0, $season == 0 ? null : $season);
 
       $newPair = [];
       $newPair[] = "rotation $i";
@@ -197,6 +203,8 @@ class Pairs{
       foreach ($pair as $pairValue) {
         $left = self::shortenNameForSimulation($pairValue[0]);
         $right = self::shortenNameForSimulation($pairValue[1]);
+        // $left = $pairValue[0];
+        // $right = $pairValue[1];
         $newPair[] = "$left-$right";
       }
 
