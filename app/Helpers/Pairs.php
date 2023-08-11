@@ -107,10 +107,21 @@ class Pairs{
     return $shuffledRowPairs;
   }
 
-  static function custom($incrementToCurrent){
+  static function custom($incrementToCurrent, $mode = "normal", $overrideCurrent = null, $shuffleMembersSeed = null){
     $members = File::fileToArray(storage_path('app/members.txt'));
-    $currents = File::fileToArray(storage_path('app/current.txt'));
-    $rotations = (int)$currents[0];
+    $rotations = $overrideCurrent;
+
+    if($rotations === null){
+      $currents = File::fileToArray(storage_path('app/current.txt'));
+      $rotations = (int)$currents[0];
+    }
+
+    if($shuffleMembersSeed !== null)
+      $members = self::fisherYatesShuffle($members, $shuffleMembersSeed);
+
+    if ($mode == "reduced") {
+      $members = self::reduceMembersToFirstNameOnly($members);
+    }
 
     $rotations += $incrementToCurrent;
     if($rotations < 0)
@@ -118,9 +129,14 @@ class Pairs{
 
     $pairs = self::createPairs($members);
     $currentPair = $pairs[$rotations % count($pairs)];
-    $shuffledRowPairs = self::shuffleAll($currentPair);
 
-    return $shuffledRowPairs;
+    if($shuffleMembersSeed === null){
+      return $currentPair;
+    }else{
+      $shuffledRowPairs = self::shuffleAll($currentPair);
+
+      return $shuffledRowPairs;
+    }
   }
 
   static function currentAsciiTable(){
@@ -161,6 +177,53 @@ class Pairs{
       "pairs" => self::current(),
       "generated" => gmdate(DATE_ATOM,File::fileStat(storage_path('app/current.txt'))["mtime"]),
       "rotations" => $rotations,
+    ];
+  }
+
+  private static function shortenNameForSimulation($name){
+    return substr(strtoupper(str_replace(' ', '', $name)), 0, 3);
+  }
+
+  private static function nameToIntegerForSimulation($name){
+    // return substr(strtoupper(str_replace(' ', '', $name)), 0, 3);
+    $hash = md5($name);
+    $intVal = hexdec($hash);
+    $intVal = substr($intVal, 0, 7);
+    $intVal = $intVal * 100000;
+    return $intVal;
+  }
+
+  private static function getSeason($membersCount, $current){
+    return floor($current/ ($membersCount-1));
+  }
+
+  static function simulations($count = 1) : array {
+    $members = File::fileToArray(storage_path('app/members.txt'));
+    $shuffleMembersSeed = env('APP_SHUFFLE_SEED');
+    $pairs = [];
+    for ($i=0; $i < $count; $i++) {
+      $season = self::getSeason(count($members), $i);
+
+      $pair = self::custom($i, "reduced", 0, $season == 0 ? null : $season + $shuffleMembersSeed);
+
+      $newPair = [];
+      $newPair[] = "rotation $i";
+      // $newPair[] = "modulo ". $i % (count($members) - 1);
+      $newPair[] = "season $season";
+      foreach ($pair as $pairValue) {
+        $left = self::nameToIntegerForSimulation($pairValue[0]);
+        $right = self::nameToIntegerForSimulation($pairValue[1]);
+        $newPair[] = "[".($left + $right)."]";
+        $left = self::shortenNameForSimulation($pairValue[0]);
+        $right = self::shortenNameForSimulation($pairValue[1]);
+        $newPair[] = $left . "-" . $right;
+      }
+
+      $pairs[] = implode(" | ",$newPair);
+    }
+
+    return [
+      "pairs" => $pairs
     ];
   }
 }

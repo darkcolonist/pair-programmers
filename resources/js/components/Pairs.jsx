@@ -102,7 +102,17 @@ const TableRows = function({rows, emphasize}){
 
   if(rows.length === 0)
     return <TableRow>
-      <CellComponent align="center">table empty</CellComponent>
+      <CellComponent align="center">
+        <Stack direction="row" spacing={1}>
+          <Typography>coming soon</Typography>
+          <Avatar
+            alt="soon"
+            src="/world-pipe.gif"
+            variant="rounded"
+            sx={{ width: 24, height: 24, border: "2px solid #002e0c" }}
+          />
+        </Stack>
+      </CellComponent>
     </TableRow>
 
   const renderRows = rows.map((row, rowIndex) =>

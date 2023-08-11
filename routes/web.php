@@ -3,6 +3,7 @@
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 use App\Helpers\Discord;
+use App\Helpers\Git;
 use App\Helpers\Pairs;
 
 /*
@@ -22,6 +23,13 @@ $router->group(['prefix' => 'test', "middleware" => ['test']], function () use (
       "content-type" => "text/plain"
     ]);
   });
+
+  $router->get('pairs/simulation[/{count}]', function ($count = 5) {
+  // $router->get('pairs/simulation/{?count}', function () {
+    return response(Pairs::simulations($count), 200, [
+      "content-type" => "text/plain"
+    ]);
+  });
 });
 
 $router->get('/legacy', function () use ($router) {
@@ -36,14 +44,22 @@ $router->get('/legacy/slim', function () use ($router) {
   ]);
 });
 
+$router->get('/version', function() use($router){
+  return response(Git::commitHash(), 200, [
+    "content-type" => "text/plain"
+  ]);
+});
+
 $router->get('/pairs', function () use ($router) {
   if(env("APP_ENV") === "local" && env("APP_DEBUG") === true)
     sleep(2);
 
   return response()->json([
     "current" => Pairs::currentWithMeta(),
-    "yesterday" => Pairs::custom(-1),
-    "tomorrow" => Pairs::custom(1),
+    // "yesterday" => Pairs::custom(-1),
+    // "tomorrow" => Pairs::custom(1),
+    "yesterday" => [],
+    "tomorrow" => [],
   ]);
 });
 
