@@ -89,15 +89,15 @@ class Pairs{
     return rtrim($table, "\n");
   }
 
-  static function current($mode = "normal"){
+  static function currentV1($mode = "normal"){
     $members = File::fileToArray(storage_path('app/members.txt'));
 
-    if($mode == "reduced"){
+    if ($mode == "reduced") {
       $members = self::reduceMembersToFirstNameOnly($members);
     }
 
     $currents = File::fileToArray(storage_path('app/current.txt'));
-    $rotations = (integer)$currents[0];
+    $rotations = (int)$currents[0];
 
     // below is where the engine starts
     $pairs = self::createPairs($members);
@@ -105,6 +105,22 @@ class Pairs{
     $shuffledRowPairs = self::shuffleAll($currentPair);
 
     return $shuffledRowPairs;
+  }
+
+  static function currentV2($mode = "normal"){
+    $members = File::fileToArray(storage_path('app/members.txt'));
+    $currents = File::fileToArray(storage_path('app/current.txt'));
+    $rotations = (int)$currents[0];
+    $season = self::getSeason(count($members), $rotations);
+    $shuffleMembersSeed = env('APP_SHUFFLE_SEED');
+
+    $pairs = self::custom(0, $mode, null, $season + $shuffleMembersSeed);
+
+    return $pairs;
+  }
+
+  static function current($mode = "normal"){
+    return self::currentV2($mode);
   }
 
   static function custom($incrementToCurrent, $mode = "normal", $overrideCurrent = null, $shuffleMembersSeed = null){
