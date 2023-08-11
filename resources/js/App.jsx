@@ -18,7 +18,12 @@ const App = function () {
           }}>{APP_NAME}</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Dashboard />
+          {/* <Dashboard /> */}
+          <Typography sx={{
+            color: "darkgreen"
+          }}>
+            currently in the works, meantime please check discord for the updated pair-ups
+          </Typography>
         </Grid>
       </Grid>
     </ThemeProvider>
