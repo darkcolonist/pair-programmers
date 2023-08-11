@@ -18,4 +18,11 @@ class Git{
 
     return $commitHash;
   }
+
+  static function commitHashShort($padLength = 4){
+    $commitHash = '145ff7e5c0d2717ee6a47a72d39811dbdfba9e70';
+    $shortenedHash = substr($commitHash, 0, $padLength) . '...' . substr($commitHash, -$padLength);
+
+    return $shortenedHash;
+  }
 }

@@ -25,6 +25,12 @@ const App = function () {
             currently in the works, meantime please check discord for the updated pair-ups
           </Typography>
         </Grid>
+        <Grid item xs={12}>
+          <Typography className="footerInfoCode" sx={{
+            fontSize: '.8em',
+            color: green[900]
+          }}>build: {APP_BUILD}</Typography>
+        </Grid>
       </Grid>
     </ThemeProvider>
   );

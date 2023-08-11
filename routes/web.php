@@ -68,6 +68,7 @@ $router->get('[{path:.*}]', function ($path = null) use ($router) {
   return view('react', [
     "expose" => [
       "APP_NAME" => env("APP_NAME")
+      , "APP_BUILD" => Git::commitHashShort()
     ]
   ]);
 });
