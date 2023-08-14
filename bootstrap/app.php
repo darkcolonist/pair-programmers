@@ -78,6 +78,7 @@ $app->configure('app');
 
 $app->routeMiddleware([
     'test' => App\Http\Middleware\TestMiddleware::class,
+    'all' => App\Http\Middleware\AllRoutesMiddleware::class,
     // 'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 
