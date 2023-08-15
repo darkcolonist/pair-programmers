@@ -48,5 +48,12 @@ class Kernel extends ConsoleKernel
       Schedule::THURSDAY,
       Schedule::FRIDAY,
     ]);
+    $schedule->command('test:log "daily cron #3"')->dailyAt('16:49')->days([
+      Schedule::MONDAY,
+      Schedule::TUESDAY,
+      Schedule::WEDNESDAY,
+      Schedule::THURSDAY,
+      Schedule::FRIDAY,
+    ]);
   }
 }
