@@ -32,6 +32,19 @@ $router->group(["middleware" => ['all']],
           "content-type" => "text/plain"
         ]);
       });
+
+      $router->get('app/env', function () use ($router) {
+        return response(app()->environment(), 200, [
+          "content-type" => "text/plain"
+        ]);
+      });
+
+      $router->get('log', function () use ($router) {
+        app('log')->channel('debug')->info('test');
+        return response(config('app.env'), 200, [
+          "content-type" => "text/plain"
+        ]);
+      });
     });
 
     $router->get('/legacy', function () use ($router) {

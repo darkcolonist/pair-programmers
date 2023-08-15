@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
       \App\Console\Commands\DecrementCommand::class,
       \App\Console\Commands\IncrementCommand::class,
       \App\Console\Commands\DiscordSendCurrentCommand::class,
+      \App\Console\Commands\TestLogCommand::class,
     ];
 
     /**
@@ -26,6 +27,19 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+      $schedule->command('test:log "daily cron #1"')->dailyAt('07:00')->days([
+        Schedule::MONDAY,
+        Schedule::TUESDAY,
+        Schedule::WEDNESDAY,
+        Schedule::THURSDAY,
+        Schedule::FRIDAY,
+      ]);
+      $schedule->command('test:log "daily cron #2"')->dailyAt('07:05')->days([
+        Schedule::MONDAY,
+        Schedule::TUESDAY,
+        Schedule::WEDNESDAY,
+        Schedule::THURSDAY,
+        Schedule::FRIDAY,
+      ]);
     }
 }
