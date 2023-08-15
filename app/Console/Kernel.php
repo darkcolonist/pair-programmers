@@ -34,6 +34,17 @@ class Kernel extends ConsoleKernel
       Schedule::THURSDAY,
       Schedule::FRIDAY,
     ]);
+    $schedule->command('discord:current"')->dailyAt('07:05')->days([
+      Schedule::MONDAY,
+      Schedule::TUESDAY,
+      Schedule::WEDNESDAY,
+      Schedule::THURSDAY,
+      Schedule::FRIDAY,
+    ]);
+
+    /**
+     * below are test cases that need to be deleted soon!
+     */
     $schedule->command('test:log "daily cron #1"')->dailyAt('07:00')->days([
       Schedule::MONDAY,
       Schedule::TUESDAY,
@@ -42,13 +53,6 @@ class Kernel extends ConsoleKernel
       Schedule::FRIDAY,
     ]);
     $schedule->command('test:log "daily cron #2"')->dailyAt('07:05')->days([
-      Schedule::MONDAY,
-      Schedule::TUESDAY,
-      Schedule::WEDNESDAY,
-      Schedule::THURSDAY,
-      Schedule::FRIDAY,
-    ]);
-    $schedule->command('test:log "daily cron #3"')->dailyAt('16:49')->days([
       Schedule::MONDAY,
       Schedule::TUESDAY,
       Schedule::WEDNESDAY,
