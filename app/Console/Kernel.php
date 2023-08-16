@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
     \App\Console\Commands\DecrementCommand::class,
     \App\Console\Commands\IncrementCommand::class,
     \App\Console\Commands\DiscordSendCurrentCommand::class,
+    \App\Console\Commands\DiscordSendCustomMessageCommand::class,
     \App\Console\Commands\TestLogCommand::class,
     \App\Console\Commands\TestDiscordCommand::class,
   ];

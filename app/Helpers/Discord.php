@@ -35,6 +35,16 @@ class Discord{
     return $response;
   }
 
+  static function customMessage($message){
+    $data = [
+      'content' => $message
+    ];
+
+    $response = self::sendPost(self::webhookURL(), $data);
+
+    return $response;
+  }
+
   static function test(){
     $data = [
       'content' => uniqid() . " hello from " . config('app.name')
