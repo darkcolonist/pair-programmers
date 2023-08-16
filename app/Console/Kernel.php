@@ -27,32 +27,14 @@ class Kernel extends ConsoleKernel
    */
   protected function schedule(Schedule $schedule)
   {
-    $schedule->command('current:increment')->dailyAt('11:00')->days([
+    $schedule->command('current:increment')->dailyAt('07:00')->days([
       Schedule::MONDAY,
       Schedule::TUESDAY,
       Schedule::WEDNESDAY,
       Schedule::THURSDAY,
       Schedule::FRIDAY,
     ]);
-    $schedule->command('discord:current')->dailyAt('11:01')->days([
-      Schedule::MONDAY,
-      Schedule::TUESDAY,
-      Schedule::WEDNESDAY,
-      Schedule::THURSDAY,
-      Schedule::FRIDAY,
-    ]);
-
-    /**
-     * below are test cases that need to be deleted soon!
-     */
-    $schedule->command('test:log "daily cron #1"')->dailyAt('10:29')->days([
-      Schedule::MONDAY,
-      Schedule::TUESDAY,
-      Schedule::WEDNESDAY,
-      Schedule::THURSDAY,
-      Schedule::FRIDAY,
-    ]);
-    $schedule->command('test:log "daily cron #2"')->dailyAt('10:30')->days([
+    $schedule->command('discord:current')->dailyAt('07:01')->days([
       Schedule::MONDAY,
       Schedule::TUESDAY,
       Schedule::WEDNESDAY,
