@@ -17,6 +17,8 @@ class Discord{
 
   static function current()
   {
+    app('log')->channel('debug')->info('discord:current starting');
+
     $webhookUrl = env('DISCORD_WEBHOOK_URL', 'YOUR_WEBHOOK_URL_HERE');
 
     $data = [
@@ -25,6 +27,8 @@ class Discord{
 
     $response = Http::withoutVerifying()
       ->post($webhookUrl, $data);
+
+    app('log')->channel('debug')->info('discord:current completed: '.$response);
 
     return $response;
   }
