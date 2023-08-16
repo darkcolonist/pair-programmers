@@ -5,6 +5,7 @@
 use App\Helpers\Discord;
 use App\Helpers\Git;
 use App\Helpers\Pairs;
+use App\Helpers\Random;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,18 @@ $router->group(["middleware" => ['all']],
         return response(config('app.env'), 200, [
           "content-type" => "text/plain"
         ]);
+      });
+
+      $router->get('randomint', function () use ($router) {
+        $arr = [];
+
+        $arr[] = Random::int(5,21,20230816);
+        $arr[] = Random::int(5,21,20230817);
+        $arr[] = Random::int(5,20,1);
+        $arr[] = Random::int(5,20,2);
+        $arr[] = Random::int(5,20,1);
+
+        return response()->json($arr);
       });
     });
 

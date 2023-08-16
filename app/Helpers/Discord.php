@@ -15,16 +15,32 @@ class Discord{
       ;
   }
 
+  static function webhookURL() : string {
+    return env('DISCORD_WEBHOOK_URL', 'YOUR_WEBHOOK_URL_HERE');
+  }
+
+  static function sendPost($url, $data) : \Illuminate\Http\Client\Response {
+    return Http::withoutVerifying()
+      ->post($url, $data);
+  }
+
   static function current()
   {
-    $webhookUrl = env('DISCORD_WEBHOOK_URL', 'YOUR_WEBHOOK_URL_HERE');
-
     $data = [
       'content' => self::getCurrentMessage()
     ];
 
-    $response = Http::withoutVerifying()
-      ->post($webhookUrl, $data);
+    $response = self::sendPost(self::webhookURL(), $data);
+
+    return $response;
+  }
+
+  static function test(){
+    $data = [
+      'content' => uniqid() . " hello from " . config('app.name')
+    ];
+
+    $response = self::sendPost(self::webhookURL(), $data);
 
     return $response;
   }

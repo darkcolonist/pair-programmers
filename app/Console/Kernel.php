@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
+use \App\Helpers\Random;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     \App\Console\Commands\IncrementCommand::class,
     \App\Console\Commands\DiscordSendCurrentCommand::class,
     \App\Console\Commands\TestLogCommand::class,
+    \App\Console\Commands\TestDiscordCommand::class,
   ];
 
   /**
@@ -27,6 +29,8 @@ class Kernel extends ConsoleKernel
    */
   protected function schedule(Schedule $schedule)
   {
+    $randomMinuteForDiscordCurrent = Random::int(5, 21, date('Ymd'));
+
     $schedule->command('current:increment')->dailyAt('07:00')->days([
       Schedule::MONDAY,
       Schedule::TUESDAY,
@@ -34,7 +38,8 @@ class Kernel extends ConsoleKernel
       Schedule::THURSDAY,
       Schedule::FRIDAY,
     ]);
-    $schedule->command('discord:current')->dailyAt('07:01')->days([
+
+    $schedule->command('discord:current')->dailyAt('07:'.$randomMinuteForDiscordCurrent)->days([
       Schedule::MONDAY,
       Schedule::TUESDAY,
       Schedule::WEDNESDAY,
