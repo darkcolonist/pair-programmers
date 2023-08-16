@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
       Schedule::THURSDAY,
       Schedule::FRIDAY,
     ]);
-    $schedule->command('discord:current"')->dailyAt('07:05')->days([
+    $schedule->command('discord:current"')->dailyAt('10:31')->days([
       Schedule::MONDAY,
       Schedule::TUESDAY,
       Schedule::WEDNESDAY,
