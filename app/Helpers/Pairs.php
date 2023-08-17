@@ -1,6 +1,8 @@
 <?php
 namespace App\Helpers;
 
+use App\Helpers\Random;
+
 class Pairs{
   static function createPairs($members){
     $n = count($members);
@@ -25,35 +27,6 @@ class Pairs{
 
   static function println($string = ''){
     echo "{$string}\n";
-  }
-
-  // https://stackoverflow.com/a/6557863/27698
-  static function fisherYatesShuffle($items, $seed)
-  {
-    @mt_srand($seed);
-    for ($i = count($items) - 1; $i > 0; $i--) {
-      $j = @mt_rand(0, $i);
-      $tmp = $items[$i];
-      $items[$i] = $items[$j];
-      $items[$j] = $tmp;
-    }
-
-    return $items;
-  }
-
-  static function shuffleAll($items){
-    $seedToday = date("Ymd", strtotime("now"));
-
-    if(isset($_GET['random_shuffle']))
-    $seedToday = rand();
-
-    $shuffled = self::fisherYatesShuffle($items, $seedToday);
-
-    foreach ($shuffled as $key => $anItem) {
-      $shuffled[$key] = self::fisherYatesShuffle($anItem, intval("{$seedToday}{$key}"));
-    }
-
-    return $shuffled;
   }
 
   // credits to chatGPT
@@ -102,7 +75,7 @@ class Pairs{
     // below is where the engine starts
     $pairs = self::createPairs($members);
     $currentPair = $pairs[$rotations % count($pairs)];
-    $shuffledRowPairs = self::shuffleAll($currentPair);
+    $shuffledRowPairs = Random::shuffleAll($currentPair);
 
     return $shuffledRowPairs;
   }
@@ -133,7 +106,7 @@ class Pairs{
     }
 
     if($shuffleMembersSeed !== null)
-      $members = self::fisherYatesShuffle($members, $shuffleMembersSeed);
+      $members = Random::fisherYatesShuffle($members, $shuffleMembersSeed);
 
     if ($mode == "reduced") {
       $members = self::reduceMembersToFirstNameOnly($members);
@@ -149,7 +122,7 @@ class Pairs{
     if($shuffleMembersSeed === null){
       return $currentPair;
     }else{
-      $shuffledRowPairs = self::shuffleAll($currentPair);
+      $shuffledRowPairs = Random::shuffleAll($currentPair);
 
       return $shuffledRowPairs;
     }
