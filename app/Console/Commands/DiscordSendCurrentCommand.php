@@ -14,8 +14,11 @@ class DiscordSendCurrentCommand extends Command
   public function handle()
   {
     try {
-      Discord::current();
-      $this->info("sent successfully to ".env('DISCORD_WEBHOOK_URL'));
+      $result = Discord::current();
+      if ($result)
+        $this->info('message sent successfully to ' . env('DISCORD_WEBHOOK_URL'));
+      else
+        $this->info('unable to send message to ' . env('DISCORD_WEBHOOK_URL'));
     } catch (Exception $e) {
       $this->error($e->getMessage());
     }

@@ -16,5 +16,4 @@ pairups will change depending on the number in `storage/app/current.txt`.
 * `php artisan discord:current` to send the current list of pairups to discord webhook
 
 ## cronjobs
-to run the increment mon-fri every 7am `0 7 * * 1-5 /path/to/php /path/to/artisan current:increment`
-this will eventually make the above obsolete, but needs more testing `* * * * * /path/to/php artisan schedule:run`
+`* * * * * /path/to/php artisan schedule:run`
