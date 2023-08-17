@@ -19,7 +19,11 @@ class Discord{
     return env('DISCORD_WEBHOOK_URL', 'YOUR_WEBHOOK_URL_HERE');
   }
 
-  static function sendPost($url, $data) : \Illuminate\Http\Client\Response {
+  static function sendPost($url, $data){
+    if($url == null)
+      // return "DISCORD_WEBHOOK_URL is empty";
+      return false;
+
     return Http::withoutVerifying()
       ->post($url, $data);
   }
