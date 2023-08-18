@@ -2,6 +2,7 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Helpers\DateSkipper;
 use App\Helpers\Discord;
 use App\Helpers\Git;
 use App\Helpers\Pairs;
@@ -66,6 +67,16 @@ $router->group(["middleware" => ['all']],
         return response()->json($disp);
       });
 
+      $router->get('skipdates', function () use ($router) {
+        $disp = DateSkipper::dates();
+        return response()->json($disp);
+      });
+
+      $router->get('skipdates/today', function () use ($router) {
+        $disp = [DateSkipper::matchToday()];
+        $disp[] = date('r');
+        return response()->json($disp);
+      });
     });
 
     $router->get('/legacy', function () use ($router) {
