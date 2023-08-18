@@ -2,6 +2,8 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Str;
+use App\Helpers\Str;
 
 class Discord{
   static function getCurrentMessage(){
@@ -15,8 +17,13 @@ class Discord{
       ;
   }
 
-  static function webhookURL() : string {
-    return env('DISCORD_WEBHOOK_URL', 'YOUR_WEBHOOK_URL_HERE');
+  static function webhookURL($mask = false){
+    $webhookURL = env('DISCORD_WEBHOOK_URL', 'YOUR_WEBHOOK_URL_HERE');
+
+    if($mask)
+      $webhookURL = Str::truncateWithMiddleEllipsis($webhookURL, 20, 20, "···");
+
+    return $webhookURL;
   }
 
   static function sendPost($url, $data){

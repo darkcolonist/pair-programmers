@@ -16,9 +16,9 @@ class DiscordSendCustomMessageCommand extends Command
     try {
       $result = Discord::customMessage($this->argument("message"));
       if($result)
-        $this->info('message sent successfully to '.env('DISCORD_WEBHOOK_URL'));
+        $this->info( 'message sent successfully to ' . Discord::webhookURL(true));
       else
-        $this->info('unable to send message to ' . env('DISCORD_WEBHOOK_URL'));
+        $this->info('unable to send message to ' . Discord::webhookURL(true));
     } catch (Exception $e) {
       $this->error($e->getMessage());
     }
