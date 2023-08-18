@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Helpers\DateSkipper;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 use \App\Helpers\Random;
@@ -38,7 +39,9 @@ class Kernel extends ConsoleKernel
       Schedule::WEDNESDAY,
       Schedule::THURSDAY,
       Schedule::FRIDAY,
-    ]);
+    ])->skip(function () {
+      return DateSkipper::matchToday();
+    });
 
     $schedule->command('discord:current')->dailyAt('07:'.$randomMinuteForDiscordCurrent)->days([
       Schedule::MONDAY,
@@ -46,6 +49,12 @@ class Kernel extends ConsoleKernel
       Schedule::WEDNESDAY,
       Schedule::THURSDAY,
       Schedule::FRIDAY,
-    ]);
+    ])->skip(function () {
+      return DateSkipper::matchToday();
+    });
+
+    // $schedule->command('test:log "run"')->everyMinute()->skip(function () {
+    //   return DateSkipper::matchToday();
+    // });
   }
 }
