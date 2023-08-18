@@ -1,6 +1,8 @@
 <?php
 namespace App\Helpers;
 
+use App\Helpers\Str;
+
 class Git{
   static function commitHash()
   {
@@ -20,9 +22,6 @@ class Git{
   }
 
   static function commitHashShort($padLength = 4){
-    $commitHash = self::commitHash();
-    $shortenedHash = substr($commitHash, 0, $padLength) . '...' . substr($commitHash, -$padLength);
-
-    return $shortenedHash;
+    return Str::truncateWithMiddleEllipsis(self::commitHash(), $padLength, $padLength);
   }
 }

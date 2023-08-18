@@ -58,6 +58,14 @@ $router->group(["middleware" => ['all']],
 
         return response()->json($arr);
       });
+
+      $router->get('mask', function () use ($router) {
+        $disp = [];
+        $disp[] = Discord::webhookURL(true);
+        $disp[] = Git::commitHashShort();
+        return response()->json($disp);
+      });
+
     });
 
     $router->get('/legacy', function () use ($router) {
