@@ -32,41 +32,43 @@ $router->group(["middleware" => ['all']],
       $router->get('[{path:.*}]', 'TestController@index');
     });
 
-    $router->get('/legacy', function () use ($router) {
-      return response(Pairs::currentAsciiTable(), 200, [
-        "content-type" => "text/plain"
-      ]);
-    });
+    // $router->get('/legacy', function () use ($router) {
+    //   return response(Pairs::currentAsciiTable(), 200, [
+    //     "content-type" => "text/plain"
+    //   ]);
+    // });
 
-    $router->get('/legacy/slim', function () use ($router) {
-      return response(Pairs::currentAsciiTableSlim(), 200, [
-        "content-type" => "text/plain"
-      ]);
-    });
+    // $router->get('/legacy/slim', function () use ($router) {
+    //   return response(Pairs::currentAsciiTableSlim(), 200, [
+    //     "content-type" => "text/plain"
+    //   ]);
+    // });
 
-    $router->get('/version', function () use ($router) {
-      return response(Git::commitHash(), 200, [
-        "content-type" => "text/plain"
-      ]);
-    });
+    // $router->get('/version', function () use ($router) {
+    //   return response(Git::commitHash(), 200, [
+    //     "content-type" => "text/plain"
+    //   ]);
+    // });
 
-    $router->get('/pairs', function () use ($router) {
-      return response()->json([
-        "current" => Pairs::currentWithMeta(),
-        // "yesterday" => Pairs::custom(-1),
-        // "tomorrow" => Pairs::custom(1),
-        "yesterday" => [],
-        "tomorrow" => [],
-      ]);
-    });
+    // $router->get('/pairs', function () use ($router) {
+    //   return response()->json([
+    //     "current" => Pairs::currentWithMeta(),
+    //     // "yesterday" => Pairs::custom(-1),
+    //     // "tomorrow" => Pairs::custom(1),
+    //     "yesterday" => [],
+    //     "tomorrow" => [],
+    //   ]);
+    // });
 
     // Catch all route for SPA
-    $router->get('[{path:.*}]', function ($path = null) use ($router) {
-      return view('react', [
-        "expose" => [
-          "APP_NAME" => env("APP_NAME"), "APP_BUILD" => Git::commitHashShort()
-        ]
-      ]);
-    });
+    // $router->get('[{path:.*}]', function ($path = null) use ($router) {
+    //   return view('react', [
+    //     "expose" => [
+    //       "APP_NAME" => env("APP_NAME"), "APP_BUILD" => Git::commitHashShort()
+    //     ]
+    //   ]);
+    // });
+
+    $router->get('[{path:.*}]', 'PublicRoutesController@index');
   }
 );
