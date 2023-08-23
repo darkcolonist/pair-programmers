@@ -17,4 +17,19 @@ class Str extends \Illuminate\Support\Str{
 
     return $left . $ellipsis . $right;
   }
+
+  static function convertUrlSegmentToCamelCase($urlSegment)
+  {
+    $segments = explode('/', $urlSegment);
+
+    foreach ($segments as $index => $segment) {
+      if ($index === 0) {
+        $segments[$index] = $segment;
+      } else {
+        $segments[$index] = ucfirst($segment);
+      }
+    }
+
+    return implode('', $segments);
+  }
 }
