@@ -22,61 +22,14 @@ use App\Helpers\Random;
 $router->group(["middleware" => ['all']],
   function () use ($router) {
     $router->group(['prefix' => 'test', "middleware" => ['test']], function () use ($router) {
-      $router->get('discord/message', function () {
-        return response(Discord::getCurrentMessage(), 200, [
-          "content-type" => "text/plain"
-        ]);
-      });
+      // $router->get('pairs/simulation[/{count}]', function ($count = 5) {
+      //   // $router->get('pairs/simulation/{?count}', function () {
+      //   return response(Pairs::simulations($count), 200, [
+      //     "content-type" => "text/plain"
+      //   ]);
+      // });
 
-      $router->get('pairs/simulation[/{count}]', function ($count = 5) {
-        // $router->get('pairs/simulation/{?count}', function () {
-        return response(Pairs::simulations($count), 200, [
-          "content-type" => "text/plain"
-        ]);
-      });
-
-      $router->get('app/env', function () use ($router) {
-        return response(app()->environment(), 200, [
-          "content-type" => "text/plain"
-        ]);
-      });
-
-      $router->get('log', function () use ($router) {
-        app('log')->channel('debug')->info('test');
-        return response(config('app.env'), 200, [
-          "content-type" => "text/plain"
-        ]);
-      });
-
-      $router->get('randomint', function () use ($router) {
-        $arr = [];
-
-        $arr[] = Random::int(5,21,20230816);
-        $arr[] = Random::int(5,21,20230817);
-        $arr[] = Random::int(5,20,1);
-        $arr[] = Random::int(5,20,2);
-        $arr[] = Random::int(5,20,1);
-
-        return response()->json($arr);
-      });
-
-      $router->get('mask', function () use ($router) {
-        $disp = [];
-        $disp[] = Discord::webhookURL(true);
-        $disp[] = Git::commitHashShort();
-        return response()->json($disp);
-      });
-
-      $router->get('skipdates', function () use ($router) {
-        $disp = DateSkipper::dates();
-        return response()->json($disp);
-      });
-
-      $router->get('skipdates/today', function () use ($router) {
-        $disp = [DateSkipper::matchToday()];
-        $disp[] = date('r');
-        return response()->json($disp);
-      });
+      $router->get('[{path:.*}]', 'TestController@index');
     });
 
     $router->get('/legacy', function () use ($router) {
