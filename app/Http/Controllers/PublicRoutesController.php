@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class PublicRoutesController extends DynamicRouteController
 {
+  // Catch all route for SPA
   function _default(){
     return view('react', [
       "expose" => [
