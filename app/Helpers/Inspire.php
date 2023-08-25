@@ -13,7 +13,7 @@ class Inspire{
     if (env('QUOTE_SOURCE_URL')) {
       try {
         $response = Http::withoutVerifying()
-          ->timeout(3) // Set a timeout of 3 seconds
+          ->timeout(15) // Set a timeout of 15 seconds
           ->get(env('QUOTE_SOURCE_URL'));
 
         if ($response->successful()) {
