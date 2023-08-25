@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DateSkipper;
 use App\Helpers\Discord;
 use App\Helpers\Git;
+use App\Helpers\Inspire;
 use App\Helpers\Pairs;
 use App\Helpers\Random;
 
@@ -66,5 +67,10 @@ class TestController extends DynamicRouteController
     $disp = [DateSkipper::matchToday()];
     $disp[] = date('r');
     return response()->json($disp);
+  }
+
+  function messageOfTheDay(){
+    return
+    response()->json(Inspire::today());
   }
 }
