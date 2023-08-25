@@ -4,6 +4,13 @@ namespace App\Helpers;
 use App\Helpers\Random;
 
 class Pairs{
+  const DATE_FORMAT_STANDARD = "l, F d, Y g:ia";
+
+  static $members;
+  static $rotation;
+  static $season;
+  static $pairs;
+
   static function createPairs($members){
     $n = count($members);
 
@@ -83,11 +90,16 @@ class Pairs{
   static function currentV2($mode = "normal"){
     $members = File::fileToArray(storage_path('app/members.txt'));
     $currents = File::fileToArray(storage_path('app/current.txt'));
-    $rotations = (int)$currents[0];
-    $season = self::getSeason(count($members), $rotations);
+    $rotation = (int)$currents[0];
+    $season = self::getSeason(count($members), $rotation);
     $shuffleMembersSeed = env('APP_SHUFFLE_SEED');
 
     $pairs = self::custom(0, $mode, null, $season + $shuffleMembersSeed);
+
+    self::$members = $members;
+    self::$rotation = $rotation;
+    self::$season = $season;
+    self::$pairs = $pairs;
 
     return $pairs;
   }
@@ -152,20 +164,18 @@ class Pairs{
     $currents = File::fileToArray(storage_path('app/current.txt'));
     $rotations = (int)$currents[0];
     $shuffledRowPairs = self::current("reduced");
-    $disp = "pair up #" . $rotations . "\n";
-    $disp .= "generated: " . date("D, d M Y g:ia O", File::fileStat(storage_path('app/current.txt'))["mtime"]) . "\n";
+    $disp = "Season ". self::$season ." | Set " . $rotations . "\n";
+    $disp .= date(self::DATE_FORMAT_STANDARD, File::fileStat(storage_path('app/current.txt'))["mtime"]) . "\n";
     $disp .= self::generateAsciiTable($shuffledRowPairs) . "\n";
     return $disp;
   }
 
-  static function currentWithMeta() : array {
-    $currents = File::fileToArray(storage_path('app/current.txt'));
-    $rotations = (int)$currents[0];
-
+  static function currentWithMeta(){
     return [
       "pairs" => self::current(),
       "generated" => gmdate(DATE_ATOM,File::fileStat(storage_path('app/current.txt'))["mtime"]),
-      "rotations" => $rotations,
+      "rotations" => self::$rotation,
+      "season" => self::$season,
     ];
   }
 
@@ -186,11 +196,11 @@ class Pairs{
     return floor($current/ ($membersCount-1));
   }
 
-  static function simulations($count = 1) : array {
+  static function simulations($count = 1, $offset = 0){
     $members = File::fileToArray(storage_path('app/members.txt'));
     $shuffleMembersSeed = env('APP_SHUFFLE_SEED');
     $pairs = [];
-    for ($i=0; $i < $count; $i++) {
+    for ($i=$offset; $i < $count; $i++) {
       $season = self::getSeason(count($members), $i);
 
       $pair = self::custom($i, "reduced", 0, $season == 0 ? null : $season + $shuffleMembersSeed);

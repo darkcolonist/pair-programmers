@@ -30,11 +30,13 @@ const Dashboard = function () {
     </Grid>
     <Grid item xs={12}>
       <Stack direction="row"
+        divider={<Divider orientation="vertical" flexItem />}
         justifyContent="center"
         alignItems="center"
         spacing={2}>
-        <Typography className="footerInfoCode">Pair up #{currentData.current.rotations}</Typography>
-        <Typography className="footerInfoCode">Generated on <Moment format="dddd, MMMM Do YYYY, h:mm:ss a">{currentData.current.generated}</Moment></Typography>
+        <Typography className="footerInfoCode">Season {currentData.current.season}</Typography>
+        <Typography className="footerInfoCode">Set {currentData.current.rotations}</Typography>
+        <Typography className="footerInfoCode"><Moment format="h:mma dddd, MMMM DD, YYYY">{currentData.current.generated}</Moment></Typography>
         <GithubRepositoryChip />
       </Stack>
     </Grid>

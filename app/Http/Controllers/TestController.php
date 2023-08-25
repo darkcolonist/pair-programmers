@@ -24,7 +24,9 @@ class TestController extends DynamicRouteController
   }
 
   function pairsSimulation() {
-    return response(Pairs::simulations(request()->query('count', 5)), 200, [
+    return response(Pairs::simulations(
+      request()->query('count', 5)
+      , request()->query('offset', 0)), 200, [
       "content-type" => "text/plain"
     ]);
   }
