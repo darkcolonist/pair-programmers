@@ -4,7 +4,7 @@ import { Chip } from "@mui/material";
 
 export default function GithubRepositoryChip(){
   return <Chip icon={<GitHubIcon />}
-    label="guthib"
+    label={"build "+APP_BUILD}
     size="small"
     color="success"
     variant="outlined"
