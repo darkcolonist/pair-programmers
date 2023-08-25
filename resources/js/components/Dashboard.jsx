@@ -22,6 +22,15 @@ const Dashboard = function () {
     return <LoadingTable columnsNum={2} component={Paper} />
 
   return <Grid container spacing={2}>
+    <Grid item xs={3} />
+    <Grid item xs={6}
+      display="grid"
+      justifyItems= "center"
+    >
+      <Typography className="footerInfoCode">{currentData.message}</Typography>
+    </Grid>
+    <Grid item xs={3} />
+
     <Grid item xs={12}
       display="grid"
       justifyItems= "center"

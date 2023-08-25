@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DateSkipper;
 use App\Helpers\Git;
+use App\Helpers\Inspire;
 use App\Helpers\Pairs;
 use Illuminate\Http\Request;
 
@@ -45,6 +46,7 @@ class PublicRoutesController extends DynamicRouteController
       // "tomorrow" => Pairs::custom(1),
       "yesterday" => [],
       "tomorrow" => [],
+      "message" => Inspire::today()
     ]);
   }
 }
