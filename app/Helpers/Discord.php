@@ -12,8 +12,9 @@ class Discord{
     return "Good Day Programmers!\n\n".
       "Here are today's pairs:\n\n".
       "```{$currentAsciiTable}```\n".
-      "Let the coding begin and may the odds be ever in your favor!\n".
-      "see ".env('APP_URL')." for more"
+      "Message of the day:\n" .
+      "\"".Inspire::today(). "\"\n\n".
+      "See ".env('APP_URL')." for more. Happy Coding!"
       ;
   }
 
