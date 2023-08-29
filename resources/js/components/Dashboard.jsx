@@ -31,12 +31,15 @@ const Dashboard = function () {
     </Grid>
     <Grid item xs={3} />
 
-    <Grid item xs={12}
+    <Grid item xs={1} />
+    <Grid item xs={10}
       display="grid"
       justifyItems= "center"
     >
       <Pairs width="70%" title="today" emphasize pairs={currentData.current.pairs}/>
     </Grid>
+    <Grid item xs={1} />
+
     <Grid item xs={12}>
       <Stack direction="row"
         divider={<Divider orientation="vertical" flexItem />}

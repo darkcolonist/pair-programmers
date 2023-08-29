@@ -69,7 +69,7 @@ const getCellWidth = function({small, emphasize}){
 }
 
 const NormalTableCell = function({emphasize, position, ...props}) {
-  return <TableCell {...props}
+  return <TableCell {...props} sx={{borderBottom: "none"}}
     style={{
       ...props.style,
       borderBottom: 'none'
@@ -85,7 +85,7 @@ const NormalTableCell = function({emphasize, position, ...props}) {
 }
 
 const EmphasizedTableCell = function({emphasize, position, ...props}){
-  return <TableCell {...props}>
+  return <TableCell {...props} sx={{borderBottom: "none"}}>
     <Typography variant="h3" sx={{
       color: green[200],
       textTransform: "capitalize",
@@ -132,8 +132,8 @@ const TableRows = function({rows, emphasize}){
 const Pairs = function({title, width = "100%", pairs = [], emphasize = false}){
   const tableContainerProps = emphasize ?
     {
-      component: Paper,
-      elevation: 1
+      // component: Paper,
+      // elevation: 1
     } :
     {}
 
